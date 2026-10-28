@@ -388,7 +388,7 @@ function openHotelLightboxModal(startIndex = 0) {
   const renderModalContent = () => {
     const photo = hotelInfo.gallery[currentIdx] || hotelInfo.gallery[0];
     mount.innerHTML = `
-      <div class="modal-gallery-main" style="height: 460px;">
+      <div class="modal-gallery-main">
         <img src="${photo.url}" alt="${photo.caption}" />
         <button type="button" class="hotel-nav-arrow prev" id="modal-hotel-prev" aria-label="上一張">‹</button>
         <button type="button" class="hotel-nav-arrow next" id="modal-hotel-next" aria-label="下一張">›</button>
