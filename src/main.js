@@ -14,6 +14,7 @@ const STORAGE_KEY = 'bangkok_sukhumvit11_saved_ids_v1';
 const state = {
   activeTab: 'tab-hotel',
   hotelPhotoIndex: 0,
+  hotelGalleryFilter: 'all',
   filters: {
     spa: 'all',
     michelin: 'all',
@@ -60,21 +61,26 @@ function renderHotelSection() {
   const mount = document.getElementById('hotel-section-mount');
   if (!mount) return;
 
+  const totalPhotos = hotelInfo.gallery.length;
   const currentPhoto = hotelInfo.gallery[state.hotelPhotoIndex] || hotelInfo.gallery[0];
+
+  const filteredGallery = hotelInfo.gallery
+    .map((item, index) => ({ ...item, originalIndex: index }))
+    .filter((item) => state.hotelGalleryFilter === 'all' || item.group === state.hotelGalleryFilter);
 
   mount.innerHTML = `
     <div class="section-intro-bar">
       <div>
         <span class="section-eyebrow">ACCOMMODATION DETAILS・12/18 – 12/20</span>
         <h2 class="section-heading">🏨 住宿資訊：Travelodge Sukhumvit 11</h2>
-        <p class="section-desc">本次曼谷行下榻飯店、入住房型（Superior Premium Room 雙人房）與入住/退房時間總覽。</p>
+        <p class="section-desc">本次曼谷行下榻飯店、入住房型（Superior Premium Room 雙人房）與 25 張官方實景照片總覽。</p>
       </div>
     </div>
 
     <!-- 專屬住宿憑證卡 (僅顯示於住宿資訊 Tab) -->
     <div class="stay-pass-banner" style="margin-bottom: 26px;">
       <div class="stay-pass-left">
-        <div class="stay-pass-thumb">
+        <div class="stay-pass-thumb" data-open-hotel-lightbox="${state.hotelPhotoIndex}">
           <img src="${currentPhoto.url}" alt="Travelodge Sukhumvit 11 Superior Premium Room" />
           <span class="thumb-badge">入住房型</span>
         </div>
@@ -118,14 +124,23 @@ function renderHotelSection() {
 
     <div class="hotel-showcase-card">
       <div class="hotel-hero-grid">
-        <!-- 左側：Superior Premium Room 與飯店實景互動畫廊 -->
+        <!-- 左側：Superior Premium Room 與飯店實景互動畫廊 (25 張) -->
         <div class="hotel-gallery-stage">
           <div class="hotel-main-photo-wrap">
-            <img id="hotel-main-img" src="${currentPhoto.url}" alt="${currentPhoto.caption}" />
-            <span class="hotel-photo-tag" id="hotel-main-tag">📸 ${currentPhoto.tag} (${state.hotelPhotoIndex + 1}/${hotelInfo.gallery.length})</span>
+            <img
+              id="hotel-main-img"
+              src="${currentPhoto.url}"
+              alt="${currentPhoto.caption}"
+              data-open-hotel-lightbox="${state.hotelPhotoIndex}"
+              style="cursor: zoom-in;"
+              title="點擊放大檢視高畫質原圖"
+            />
+            <span class="hotel-photo-tag" id="hotel-main-tag">📸 ${currentPhoto.tag} (${state.hotelPhotoIndex + 1} / ${totalPhotos})</span>
+            <button type="button" class="hotel-nav-arrow prev" id="hotel-prev-btn" aria-label="上一張照片">‹</button>
+            <button type="button" class="hotel-nav-arrow next" id="hotel-next-btn" aria-label="下一張照片">›</button>
             <div class="hotel-photo-caption" id="hotel-main-caption">${currentPhoto.caption}</div>
           </div>
-          <div class="hotel-thumb-strip">
+          <div class="hotel-thumb-strip" id="hotel-thumb-strip">
             ${hotelInfo.gallery
               .map(
                 (item, idx) => `
@@ -220,8 +235,41 @@ function renderHotelSection() {
       </div>
     </div>
 
+    <!-- 25 張完整房型與飯店實景圖輯專區 -->
+    <div class="section-intro-bar" style="margin-top: 36px;">
+      <div>
+        <span class="section-eyebrow">OFFICIAL PHOTO GALLERY・25 PHOTOS</span>
+        <h2 class="section-heading">📸 Superior Premium Room ＆ 飯店實景圖輯（共 ${totalPhotos} 張）</h2>
+        <p class="section-desc">完整收錄 Travelodge Sukhumvit 11 的 Superior Premium Room 房內實景、乾濕分離花灑衛浴、頂樓泳池、健身房、大廳與 The Lodge 餐廳（點擊任一照片可放大檢視）。</p>
+      </div>
+      <div class="filter-pills" id="hotel-gallery-filter-pills">
+        <button class="filter-pill ${state.hotelGalleryFilter === 'all' ? 'active' : ''}" data-hfilter="all">全部照片 (${totalPhotos})</button>
+        <button class="filter-pill ${state.hotelGalleryFilter === 'room' ? 'active' : ''}" data-hfilter="room">🛏️ Superior Premium 房型 (12)</button>
+        <button class="filter-pill ${state.hotelGalleryFilter === 'bathroom' ? 'active' : ''}" data-hfilter="bathroom">🚿 乾濕分離衛浴 (3)</button>
+        <button class="filter-pill ${state.hotelGalleryFilter === 'pool' ? 'active' : ''}" data-hfilter="pool">🏊 頂樓泳池與健身房 (4)</button>
+        <button class="filter-pill ${state.hotelGalleryFilter === 'hotel' ? 'active' : ''}" data-hfilter="hotel">🏨 外觀・大廳・餐廳 (6)</button>
+      </div>
+    </div>
+
+    <div class="hotel-full-gallery-grid">
+      ${filteredGallery
+        .map(
+          (item) => `
+        <div class="hotel-gallery-card" data-open-hotel-lightbox="${item.originalIndex}">
+          <div class="hotel-gallery-img-wrap">
+            <img src="${item.url}" alt="${item.caption}" loading="lazy" />
+            <span class="hotel-gallery-num">#${String(item.originalIndex + 1).padStart(2, '0')}</span>
+            <span class="hotel-gallery-tag">${item.tag}</span>
+          </div>
+          <div class="hotel-gallery-card-caption">${item.caption}</div>
+        </div>
+      `
+        )
+        .join('')}
+    </div>
+
     <!-- 四大主題攻略快速傳送門 -->
-    <div class="section-intro-bar" style="margin-top: 12px;">
+    <div class="section-intro-bar" style="margin-top: 42px;">
       <div>
         <span class="section-eyebrow">EXPLORE SUKHUMVIT 11 & BEYOND</span>
         <h2 class="section-heading">從飯店出發：四大主題全攻略導覽</h2>
@@ -280,11 +328,44 @@ function renderHotelSection() {
     </div>
   `;
 
+  // 綁定飯店主圖左右切換按鈕
+  document.getElementById('hotel-prev-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.hotelPhotoIndex = (state.hotelPhotoIndex - 1 + totalPhotos) % totalPhotos;
+    renderHotelSection();
+  });
+
+  document.getElementById('hotel-next-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.hotelPhotoIndex = (state.hotelPhotoIndex + 1) % totalPhotos;
+    renderHotelSection();
+  });
+
   // 綁定飯店縮圖點擊切換
   mount.querySelectorAll('[data-photo-idx]').forEach((thumb) => {
     thumb.addEventListener('click', () => {
       state.hotelPhotoIndex = Number(thumb.getAttribute('data-photo-idx'));
       renderHotelSection();
+    });
+  });
+
+  // 確保選中的縮圖滾動至可視範圍
+  const activeThumb = mount.querySelector('.hotel-thumb-item.active');
+  activeThumb?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+  // 綁定 25 張圖輯分類篩選按鈕
+  mount.querySelectorAll('[data-hfilter]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.hotelGalleryFilter = btn.getAttribute('data-hfilter') || 'all';
+      renderHotelSection();
+    });
+  });
+
+  // 綁定點擊飯店照片開啟全螢幕燈箱 Modal
+  mount.querySelectorAll('[data-open-hotel-lightbox]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const idx = Number(el.getAttribute('data-open-hotel-lightbox'));
+      openHotelLightboxModal(idx);
     });
   });
 
@@ -295,6 +376,71 @@ function renderHotelSection() {
       window.scrollTo({ top: document.getElementById('sticky-nav').offsetTop - 10, behavior: 'smooth' });
     });
   });
+}
+
+function openHotelLightboxModal(startIndex = 0) {
+  let currentIdx = startIndex;
+  const total = hotelInfo.gallery.length;
+  const modal = document.getElementById('detail-modal');
+  const mount = document.getElementById('modal-body-mount');
+  if (!modal || !mount) return;
+
+  const renderModalContent = () => {
+    const photo = hotelInfo.gallery[currentIdx] || hotelInfo.gallery[0];
+    mount.innerHTML = `
+      <div class="modal-gallery-main" style="height: 460px;">
+        <img src="${photo.url}" alt="${photo.caption}" />
+        <button type="button" class="hotel-nav-arrow prev" id="modal-hotel-prev" aria-label="上一張">‹</button>
+        <button type="button" class="hotel-nav-arrow next" id="modal-hotel-next" aria-label="下一張">›</button>
+        <span class="hotel-photo-tag">📸 ${photo.tag} (${currentIdx + 1} / ${total})</span>
+      </div>
+      <div class="modal-thumbs">
+        ${hotelInfo.gallery
+          .map(
+            (item, idx) => `
+          <div class="modal-thumb ${idx === currentIdx ? 'active' : ''}" data-modal-hidx="${idx}" style="flex-shrink:0;">
+            <img src="${item.url}" alt="${item.tag}" loading="lazy" />
+          </div>
+        `
+          )
+          .join('')}
+      </div>
+      <div class="modal-content-pad">
+        <h3 id="modal-title" class="venue-title" style="font-size:1.25rem;margin-bottom:6px;">${photo.caption}</h3>
+        <p class="venue-subtitle" style="margin-bottom:0;">Travelodge Sukhumvit 11 — Superior Premium Room（12/18 - 12/20 雙人房）</p>
+      </div>
+    `;
+
+    mount.querySelector('#modal-hotel-prev')?.addEventListener('click', () => {
+      currentIdx = (currentIdx - 1 + total) % total;
+      state.hotelPhotoIndex = currentIdx;
+      renderModalContent();
+      renderHotelSection();
+    });
+
+    mount.querySelector('#modal-hotel-next')?.addEventListener('click', () => {
+      currentIdx = (currentIdx + 1) % total;
+      state.hotelPhotoIndex = currentIdx;
+      renderModalContent();
+      renderHotelSection();
+    });
+
+    mount.querySelectorAll('[data-modal-hidx]').forEach((t) => {
+      t.addEventListener('click', () => {
+        currentIdx = Number(t.getAttribute('data-modal-hidx'));
+        state.hotelPhotoIndex = currentIdx;
+        renderModalContent();
+        renderHotelSection();
+      });
+    });
+
+    const activeModalThumb = mount.querySelector('.modal-thumb.active');
+    activeModalThumb?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  };
+
+  renderModalContent();
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
 }
 
 // =========================================

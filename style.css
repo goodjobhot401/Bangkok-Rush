@@ -655,20 +655,23 @@ body {
 }
 
 .hotel-thumb-strip {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
   gap: 8px;
   padding: 10px 12px;
   background: #101e20;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .hotel-thumb-item {
-  height: 58px;
+  width: 78px;
+  height: 56px;
+  flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
   border: 2px solid transparent;
-  opacity: 0.62;
+  opacity: 0.58;
   transition: var(--transition);
 }
 
@@ -682,6 +685,115 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.hotel-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(12, 23, 25, 0.72);
+  color: #ffffff;
+  font-size: 1.55rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  transition: var(--transition);
+  z-index: 5;
+}
+
+.hotel-nav-arrow:hover {
+  background: var(--gold-primary);
+  border-color: var(--gold-light);
+}
+
+.hotel-nav-arrow.prev {
+  left: 14px;
+}
+
+.hotel-nav-arrow.next {
+  right: 14px;
+}
+
+/* 25 張完整飯店與房型圖輯網格 */
+.hotel-full-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  gap: 18px;
+}
+
+.hotel-gallery-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.hotel-gallery-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--gold-primary);
+}
+
+.hotel-gallery-img-wrap {
+  position: relative;
+  height: 195px;
+  overflow: hidden;
+  background: #101e20;
+}
+
+.hotel-gallery-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.hotel-gallery-card:hover .hotel-gallery-img-wrap img {
+  transform: scale(1.06);
+}
+
+.hotel-gallery-num {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(12, 23, 25, 0.82);
+  color: #ffe2a8;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  font-family: 'Outfit', sans-serif;
+}
+
+.hotel-gallery-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(12, 23, 25, 0.78);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(4px);
+}
+
+.hotel-gallery-card-caption {
+  padding: 12px 14px;
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .hotel-details-pane {
@@ -1543,9 +1655,5 @@ body {
   .hotel-details-pane,
   .hotel-specs-section {
     padding: 20px 18px;
-  }
-
-  .hotel-thumb-strip {
-    grid-template-columns: repeat(3, 1fr);
   }
 }

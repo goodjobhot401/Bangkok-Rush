@@ -56,34 +56,154 @@ export const hotelInfo = {
   ],
   gallery: [
     {
-      url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=85',
-      caption: 'Superior Premium Room — 現代極簡雙人房型與柔和暖光設計',
-      tag: '入住房型'
+      url: './src/assets/hotel/tl_01.jpg',
+      caption: 'Superior Premium Room — 特大雙人床、木質書桌與 Travelodge Sukhumvit 11 智慧電視全景',
+      tag: 'Superior Premium 房型',
+      group: 'room'
     },
     {
-      url: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1200&q=85',
-      caption: 'Superior Premium Room — 特大雙人床與大片隔音景觀落地窗',
-      tag: '房型視角'
+      url: './src/assets/hotel/tl_02.jpg',
+      caption: 'Superior Premium Room — 寬敞雙人沙發休憩區、迎賓水果茶几與長型書桌全視角',
+      tag: 'Superior Premium 房型',
+      group: 'room'
     },
     {
-      url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1200&q=85',
-      caption: 'Superior Premium Room — 獨立書桌工作區與舒適休憩空間',
-      tag: '房內配置'
+      url: './src/assets/hotel/tl_03.jpg',
+      caption: 'Superior Premium Room — 青綠泰文字母藝術掛畫款雙人房與大片採光落地窗',
+      tag: 'Superior Premium 房型',
+      group: 'room'
     },
     {
-      url: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1200&q=85',
-      caption: '乾濕分離衛浴空間 — 配備熱帶雨林花灑 (Rain Shower)',
-      tag: '衛浴空間'
+      url: './src/assets/hotel/tl_04.jpg',
+      caption: 'Superior Premium Room — 房門玄關動線、雙人休閒沙發茶几與特大雙人床',
+      tag: 'Superior Premium 房型',
+      group: 'room'
     },
     {
-      url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=85',
-      caption: '頂樓露天高空泳池 Rooftop Pool — 俯瞰曼谷素坤逸天際線',
-      tag: '飯店設施'
+      url: './src/assets/hotel/tl_05.jpg',
+      caption: 'Superior Premium Room — 大面隔音落地窗旁筆電工作圓桌與雙人沙發角',
+      tag: 'Superior Premium 房型',
+      group: 'room'
     },
     {
-      url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=85',
-      caption: '池畔日落與夜間氛圍 — 漫步 Sukhumvit 11 前的愜意時光',
-      tag: '飯店外觀與泳池'
+      url: './src/assets/hotel/tl_06.jpg',
+      caption: 'Superior Premium Room — 泰式紅底書法掛畫、幾何地毯與窗邊雙人扶手沙發',
+      tag: 'Superior Premium 房型',
+      group: 'room'
+    },
+    {
+      url: './src/assets/hotel/tl_07.jpg',
+      caption: 'Superior Premium Room — 落地窗外 Sukhumvit 11 濃密綠樹冠景觀與單椅茶几',
+      tag: 'Superior Premium 房型',
+      group: 'room'
+    },
+    {
+      url: './src/assets/hotel/tl_08.jpg',
+      caption: 'Superior Premium Room (Twin 配置參考) — 兩張單人床與窗邊綠意採光視角',
+      tag: 'Superior Premium 房型',
+      group: 'room'
+    },
+    {
+      url: './src/assets/hotel/tl_09.jpg',
+      caption: 'Superior Premium Room — 床頭暖光閱讀燈、萬國插座面板與泰式傳統圖騰掛畫',
+      tag: 'Superior Premium 房型',
+      group: 'room'
+    },
+    {
+      url: './src/assets/hotel/tl_10.jpg',
+      caption: 'Superior Premium Room — 房內雙人沙發下午茶休憩區與手沖咖啡杯具',
+      tag: 'Superior Premium 房型',
+      group: 'room'
+    },
+    {
+      url: './src/assets/hotel/tl_11.jpg',
+      caption: 'Superior Premium Room — 條紋抱枕寢具、床頭鮮花擺飾與窗邊休憩沙發景深',
+      tag: 'Superior Premium 房型',
+      group: 'room'
+    },
+    {
+      url: './src/assets/hotel/tl_12.jpg',
+      caption: 'Superior Premium Room — 玄關木質置物檯、迎賓青蘋果盤與客房內部空間景深',
+      tag: 'Superior Premium 房型',
+      group: 'room'
+    },
+    {
+      url: './src/assets/hotel/tl_13.jpg',
+      caption: 'Superior Premium Room 衛浴 — 乾濕分離玻璃淋浴間、大片明鏡與方型洗手台全景',
+      tag: '乾濕分離衛浴',
+      group: 'bathroom'
+    },
+    {
+      url: './src/assets/hotel/tl_14.jpg',
+      caption: 'Superior Premium Room 衛浴 — 頂噴熱帶雨林花灑 (Rain Shower)、紫色馬賽克磚與壁掛沐浴乳',
+      tag: '乾濕分離衛浴',
+      group: 'bathroom'
+    },
+    {
+      url: './src/assets/hotel/tl_15.jpg',
+      caption: 'Superior Premium Room 衛浴 — 潔白明亮洗手台面、吹風機與免費盥洗備品組',
+      tag: '乾濕分離衛浴',
+      group: 'bathroom'
+    },
+    {
+      url: './src/assets/hotel/tl_16.jpg',
+      caption: 'Travelodge Sukhumvit 11 外觀 — 現代深灰建築立面與醒目紅底 Travelodge 品牌招牌',
+      tag: '飯店外觀與大廳',
+      group: 'hotel'
+    },
+    {
+      url: './src/assets/hotel/tl_17.jpg',
+      caption: 'Travelodge Sukhumvit 11 大廳 — 一樓大片落地窗、挑高接待大廳與休閒沙發區',
+      tag: '飯店外觀與大廳',
+      group: 'hotel'
+    },
+    {
+      url: './src/assets/hotel/tl_18.jpg',
+      caption: 'Travelodge Sukhumvit 11 櫃檯 — 24 小時 Check-in 接待櫃檯與巨型發光品牌標誌',
+      tag: '飯店外觀與大廳',
+      group: 'hotel'
+    },
+    {
+      url: './src/assets/hotel/tl_19.jpg',
+      caption: 'Travelodge Sukhumvit 11 商務區 — 一樓大廳紅色高腳椅吧台與免費電腦查詢工作站',
+      tag: '飯店外觀與大廳',
+      group: 'hotel'
+    },
+    {
+      url: './src/assets/hotel/tl_20.jpg',
+      caption: '頂樓高空泳池 Rooftop Pool — 傍晚魔幻時刻無邊際泳池與曼谷素坤逸璀璨天際線',
+      tag: '頂樓泳池與健身房',
+      group: 'pool'
+    },
+    {
+      url: './src/assets/hotel/tl_21.jpg',
+      caption: '頂樓高空泳池 Rooftop Pool — 日間晴空視野、池畔鮮紅日光浴躺椅與雞尾酒桌',
+      tag: '頂樓泳池與健身房',
+      group: 'pool'
+    },
+    {
+      url: './src/assets/hotel/tl_22.jpg',
+      caption: '頂樓高空泳池 Rooftop Pool — 曼谷粉紫晚霞倒映於頂樓泳池水面之絕美景色',
+      tag: '頂樓泳池與健身房',
+      group: 'pool'
+    },
+    {
+      url: './src/assets/hotel/tl_23.jpg',
+      caption: '高空景觀健身房 Fitness Center — 配備跑步機、飛輪與啞鈴重訓器材的明亮運動空間',
+      tag: '頂樓泳池與健身房',
+      group: 'pool'
+    },
+    {
+      url: './src/assets/hotel/tl_24.jpg',
+      caption: '一樓 The Lodge 全日餐廳 — 現代紅灰設計感用餐座位區與泰文字母藝術格柵牆',
+      tag: '飯店外觀與大廳',
+      group: 'hotel'
+    },
+    {
+      url: './src/assets/hotel/tl_25.jpg',
+      caption: '一樓 The Lodge 自助吧台 — Saeco 現磨義式咖啡機、烘焙麵包與豐盛早餐自助餐檯',
+      tag: '飯店外觀與大廳',
+      group: 'hotel'
     }
   ]
 };
