@@ -15,6 +15,15 @@ for (const item of ['index.html', 'style.css', 'src']) {
   fs.cpSync(srcPath, destPath, { recursive: true });
 }
 
+// 自動注入版本號避免瀏覽器與 GitHub Pages CDN 快取舊版 CSS / JS
+const versionTag = Date.now().toString(36);
+const distIndexPath = path.join(distDir, 'index.html');
+let indexHtml = fs.readFileSync(distIndexPath, 'utf-8');
+indexHtml = indexHtml
+  .replace(/href="\.\/style\.css(\?v=[^"]*)?"/, `href="./style.css?v=${versionTag}"`)
+  .replace(/src="\.\/src\/main\.js(\?v=[^"]*)?"/, `src="./src/main.js?v=${versionTag}"`);
+fs.writeFileSync(distIndexPath, indexHtml, 'utf-8');
+
 // 建立 .nojekyll 確保 GitHub Pages 原生載入所有靜態資源
 fs.writeFileSync(path.join(distDir, '.nojekyll'), '');
 
