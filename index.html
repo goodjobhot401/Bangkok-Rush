@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20261028v3" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
@@ -111,11 +111,14 @@
           </div>
         </div>
 
+        <!-- SPA 互動式主視窗舞台 (左右滑動選店瀏覽) -->
+        <div id="spa-spotlight-mount"></div>
+
         <!-- 歇業警告橫幅 -->
         <div id="spa-warning-mount"></div>
 
-        <!-- SPA 卡片網格 -->
-        <div id="spa-grid-mount" class="venue-grid"></div>
+        <!-- SPA 卡片網格 (可展開/收合) -->
+        <div id="spa-grid-mount" class="venue-grid hidden"></div>
       </section>
 
       <!-- TAB 3: 二、米其林星級與必比登推介美食 -->
@@ -134,11 +137,14 @@
           </div>
         </div>
 
+        <!-- 米其林美食 互動式主視窗舞台 (左右滑動選店瀏覽) -->
+        <div id="michelin-spotlight-mount"></div>
+
         <!-- 米其林備選與停業提醒 -->
         <div id="michelin-warning-mount"></div>
 
-        <!-- 米其林美食卡片網格 -->
-        <div id="michelin-grid-mount" class="venue-grid"></div>
+        <!-- 米其林美食卡片網格 (可展開/收合) -->
+        <div id="michelin-grid-mount" class="venue-grid hidden"></div>
       </section>
 
       <!-- TAB 4: 三、步行 15 分鐘內：台灣人/華人經營與中文友善大麻店 -->
@@ -156,11 +162,14 @@
           </div>
         </div>
 
+        <!-- 中文友善大麻店 互動式主視窗舞台 (左右滑動選店瀏覽) -->
+        <div id="cannabis-spotlight-mount"></div>
+
         <!-- Pakalolo 歇業避雷提醒 -->
         <div id="cannabis-warning-mount"></div>
 
-        <!-- 大麻店卡片網格 -->
-        <div id="cannabis-grid-mount" class="venue-grid"></div>
+        <!-- 大麻店卡片網格 (可展開/收合) -->
+        <div id="cannabis-grid-mount" class="venue-grid hidden"></div>
       </section>
 
       <!-- TAB 5: 四、周邊其他補充選項（延伸備案） -->
@@ -179,7 +188,10 @@
           </div>
         </div>
 
-        <div id="extended-sections-mount"></div>
+        <!-- 延伸備案 互動式主視窗舞台 -->
+        <div id="extended-spotlight-mount"></div>
+
+        <div id="extended-sections-mount" class="hidden"></div>
       </section>
 
       <!-- TAB 6: 我的行程收藏 -->
@@ -226,7 +238,7 @@
     <div id="toast-notification" class="toast-notification hidden"></div>
   </div>
 
-  <script type="module" src="./src/main.js?v=20261028v3"></script>
+  <script type="module" src="./src/main.js"></script>
 </body>
 
 </html>
