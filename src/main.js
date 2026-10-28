@@ -63,6 +63,59 @@ function renderHotelSection() {
   const currentPhoto = hotelInfo.gallery[state.hotelPhotoIndex] || hotelInfo.gallery[0];
 
   mount.innerHTML = `
+    <div class="section-intro-bar">
+      <div>
+        <span class="section-eyebrow">ACCOMMODATION DETAILS・12/18 – 12/20</span>
+        <h2 class="section-heading">🏨 住宿資訊：Travelodge Sukhumvit 11</h2>
+        <p class="section-desc">本次曼谷行下榻飯店、入住房型（Superior Premium Room 雙人房）與入住/退房時間總覽。</p>
+      </div>
+    </div>
+
+    <!-- 專屬住宿憑證卡 (僅顯示於住宿資訊 Tab) -->
+    <div class="stay-pass-banner" style="margin-bottom: 26px;">
+      <div class="stay-pass-left">
+        <div class="stay-pass-thumb">
+          <img src="${currentPhoto.url}" alt="Travelodge Sukhumvit 11 Superior Premium Room" />
+          <span class="thumb-badge">入住房型</span>
+        </div>
+        <div class="stay-pass-info">
+          <div class="stay-pass-label">BOOKING CONFIRMATION・住宿憑證</div>
+          <h3 class="stay-pass-hotel">${hotelInfo.name}</h3>
+          <div class="stay-pass-room">
+            <span class="room-highlight">${hotelInfo.roomType}</span>
+            <span class="room-divider">｜</span>
+            <span>${hotelInfo.roomTypeZh}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stay-pass-dates">
+        <div class="date-box">
+          <span class="date-label">CHECK-IN 入住</span>
+          <strong class="date-value">${hotelInfo.checkInDate} <small>(五)</small></strong>
+          <span class="date-sub">${hotelInfo.checkInTime}</span>
+        </div>
+        <div class="date-arrow">
+          <span class="nights-pill">2 NIGHTS・雙人房</span>
+          <div class="arrow-line"></div>
+        </div>
+        <div class="date-box">
+          <span class="date-label">CHECK-OUT 退房</span>
+          <strong class="date-value">${hotelInfo.checkOutDate} <small>(日)</small></strong>
+          <span class="date-sub">${hotelInfo.checkOutTime}</span>
+        </div>
+      </div>
+
+      <div class="stay-pass-actions">
+        <a href="${hotelInfo.officialWebsite}" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">
+          🌐 飯店官網
+        </a>
+        <a href="${hotelInfo.googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-sm">
+          📍 Google Maps
+        </a>
+      </div>
+    </div>
+
     <div class="hotel-showcase-card">
       <div class="hotel-hero-grid">
         <!-- 左側：Superior Premium Room 與飯店實景互動畫廊 -->
