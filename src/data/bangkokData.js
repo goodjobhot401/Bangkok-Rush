@@ -215,6 +215,7 @@ export const spaList = [
     number: 1,
     category: 'spa',
     name: 'divana nurture spa',
+    shortName: 'divana nurture spa',
     area: 'Sukhumvit 11',
     transportMode: 'walk',
     distanceBadge: '🚶 步行 3～5 分鐘',
@@ -223,12 +224,13 @@ export const spaList = [
     noteLabel: '預約建議',
     noteText: '省去塞車與叫車時間，極受遊客歡迎，強烈建議出發前透過官網線上預約。',
     tags: ['頂級花園 SPA', '獨立包廂', '下樓即達', '必先預約'],
-    image: 'https://www.divanawellness.com/wp-content/uploads/2025/06/Home-LuxuryThaiSpaExperience-image02.jpg',
+    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
     fallbackImage: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
     gallery: [
-      'https://www.divanawellness.com/wp-content/uploads/2025/06/Home-LuxuryThaiSpaExperience-image02.jpg',
       'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.divanawellness.com/',
     websiteLabel: 'Divana 官方網站',
@@ -240,6 +242,7 @@ export const spaList = [
     number: 2,
     category: 'spa',
     name: "Let's Relax Spa - Terminal 21 Asok",
+    shortName: "Let's Relax (Terminal 21)",
     area: 'Asok 商圈',
     transportMode: 'both',
     distanceBadge: '🚶 步行 15 分 / 🚕 車程 5～8 分',
@@ -252,7 +255,9 @@ export const spaList = [
     fallbackImage: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://letsrelaxspa.com/branch/bangkok-terminal-21/',
     websiteLabel: "Let's Relax 官網",
@@ -264,6 +269,7 @@ export const spaList = [
     number: 3,
     category: 'spa',
     name: 'Health Land Asoke',
+    shortName: 'Health Land Asoke',
     area: 'Asok',
     transportMode: 'both',
     distanceBadge: '🚶 步行 15～18 分 / 🚕 車程 6 分',
@@ -276,7 +282,9 @@ export const spaList = [
     fallbackImage: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.healthlandspa.com/en/location/bangkok/asoke',
     websiteLabel: 'Health Land 官網',
@@ -288,6 +296,7 @@ export const spaList = [
     number: 4,
     category: 'spa',
     name: "Let's Relax Spa - Sukhumvit 31",
+    shortName: "Let's Relax (Sukhumvit 31)",
     area: 'Sukhumvit 31',
     transportMode: 'ride',
     distanceBadge: '🚕 搭車約 10 分鐘',
@@ -300,7 +309,9 @@ export const spaList = [
     fallbackImage: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://letsrelaxspa.com/branch/bangkok-sukhumvit-31/',
     websiteLabel: "Let's Relax 官網",
@@ -312,6 +323,7 @@ export const spaList = [
     number: 5,
     category: 'spa',
     name: "Let's Relax Spa - Ploenchit Grande Centre Point",
+    shortName: "Let's Relax (Ploenchit 30F)",
     area: 'Ploenchit (30–31F)',
     transportMode: 'ride',
     distanceBadge: '🚕 搭車約 10～12 分鐘',
@@ -324,7 +336,9 @@ export const spaList = [
     fallbackImage: 'https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://letsrelaxspa.com/branch/bangkok-ploenchit-grande-centre-point/',
     websiteLabel: "Let's Relax 官網",
@@ -336,6 +350,7 @@ export const spaList = [
     number: 6,
     category: 'spa',
     name: "Let's Relax Spa Sukhumvit 39",
+    shortName: "Let's Relax (Sukhumvit 39)",
     area: 'Phrom Phong',
     transportMode: 'ride',
     distanceBadge: '🚕 搭車約 12～15 分鐘',
@@ -348,7 +363,9 @@ export const spaList = [
     fallbackImage: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://letsrelaxspa.com/branch/bangkok-sukhumvit-39/',
     websiteLabel: "Let's Relax 官網",
@@ -360,6 +377,7 @@ export const spaList = [
     number: 7,
     category: 'spa',
     name: 'Oasis Spa (Sukhumvit 31)',
+    shortName: 'Oasis Spa (Sukhumvit 31)',
     area: 'Sukhumvit 31',
     transportMode: 'ride',
     distanceBadge: '🚕 車程 10～12 分 (含免費接駁)',
@@ -368,11 +386,13 @@ export const spaList = [
     noteLabel: '招牌療程',
     noteText: '蘭納秘密 (Lanna Secret)、四手帝王按摩；預約時可同時申請空鐵站免費接駁。',
     tags: ['蘭納花園別墅', '蓮花池景觀', '四手帝王按摩', '免費接駁車'],
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
-    fallbackImage: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1000&q=80',
+    fallbackImage: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1000&q=80',
     gallery: [
+      'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.oasisspa.net/destination/bangkok/oasis-spa-bangkok-sukhumvit-31/',
     websiteLabel: 'Oasis Spa 官網',
@@ -384,6 +404,7 @@ export const spaList = [
     number: 8,
     category: 'spa',
     name: 'BHAWA SPA on the eight',
+    shortName: 'BHAWA SPA (Soi 8)',
     area: 'Sukhumvit 8',
     transportMode: 'both',
     distanceBadge: '🚶 步行 12～15 分 / 🚕 車程 5 分',
@@ -396,7 +417,9 @@ export const spaList = [
     fallbackImage: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.bhawaspa.com/',
     websiteLabel: 'BHAWA SPA 官網',
@@ -408,6 +431,7 @@ export const spaList = [
     number: 9,
     category: 'spa',
     name: 'Yunomori Onsen & Spa Sukhumvit Soi 26',
+    shortName: 'Yunomori Onsen 日式湯森溫泉',
     area: 'Sukhumvit 26',
     transportMode: 'ride',
     distanceBadge: '🚕 搭車約 15 分鐘',
@@ -416,11 +440,13 @@ export const spaList = [
     noteLabel: '設施亮點',
     noteText: '天然礦物溫泉池 + 蘇打池 + 冷水池 + 泰式按摩 + 日式庭園餐廳，可待上半天。',
     tags: ['日式大浴場溫泉', '天然礦物湯', '冷水池蒸氣室', '肌肉痠痛救星'],
-    image: 'https://www.yunomorionsen.com/wp-content/uploads/2025/07/yunomori-onsen-and-spa-2.jpg',
+    image: 'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=1000&q=80',
     fallbackImage: 'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=1000&q=80',
     gallery: [
-      'https://www.yunomorionsen.com/wp-content/uploads/2025/07/yunomori-onsen-and-spa-2.jpg',
-      'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.yunomorionsen.com/bangkok/',
     websiteLabel: 'Yunomori 官網',
@@ -456,7 +482,8 @@ export const michelinList = [
     fallbackImage: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://guide.michelin.com/tw/zh_TW/bangkok-region/bangkok/restaurant/rung-rueang-pork-noodle',
     websiteLabel: '米其林指南專頁',
@@ -468,6 +495,7 @@ export const michelinList = [
     number: 2,
     category: 'michelin',
     name: 'Sri Trat Restaurant and Bar',
+    shortName: 'Sri Trat 泰東餐酒館',
     subName: '精緻泰東家傳料理與調酒餐酒館',
     award: '米其林指南入選餐廳',
     awardType: 'selected',
@@ -483,7 +511,8 @@ export const michelinList = [
     fallbackImage: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://guide.michelin.com/tw/zh_TW/bangkok-region/bangkok/restaurant/sri-trat',
     websiteLabel: '米其林指南專頁',
@@ -495,6 +524,7 @@ export const michelinList = [
     number: 3,
     category: 'michelin',
     name: 'Polo Fried Chicken (Soi Polo)',
+    shortName: 'Polo 波羅蒜香炸雞',
     subName: '波羅蒜香炸雞老店',
     award: '米其林必比登推介',
     awardType: 'bib',
@@ -510,7 +540,8 @@ export const michelinList = [
     fallbackImage: 'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://guide.michelin.com/tw/zh_TW/bangkok-region/bangkok/restaurant/polo-fried-chicken-soi-polo',
     websiteLabel: '米其林指南專頁',
@@ -522,6 +553,7 @@ export const michelinList = [
     number: 4,
     category: 'michelin',
     name: 'Go-Ang Pratunam Chicken Rice（紅大哥水門雞飯）',
+    shortName: '紅大哥水門雞飯',
     subName: '粉紅制服海南雞飯傳奇名店',
     award: '米其林必比登推介',
     awardType: 'bib',
@@ -537,7 +569,8 @@ export const michelinList = [
     fallbackImage: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://guide.michelin.com/tw/zh_TW/bangkok-region/bangkok/restaurant/go-ang-pratunam-chicken-rice-pratunam',
     websiteLabel: '米其林指南專頁',
@@ -549,6 +582,7 @@ export const michelinList = [
     number: 5,
     category: 'michelin',
     name: 'Here Hai (Original shop)',
+    shortName: 'Here Hai 爆量蟹肉炒飯',
     subName: 'Ekkamai 瘋狂爆量蟹肉炒飯',
     award: '米其林必比登推介',
     awardType: 'bib',
@@ -564,7 +598,8 @@ export const michelinList = [
     fallbackImage: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://guide.michelin.com/tw/zh_TW/bangkok-region/bangkok/restaurant/here-hai',
     websiteLabel: '米其林指南專頁',
@@ -576,6 +611,7 @@ export const michelinList = [
     number: 6,
     category: 'michelin',
     name: 'Supanniga Eating Room by Khun Yai',
+    shortName: 'Supanniga 泰東家常菜',
     subName: '阿嬤秘傳泰東與孔敬家常名菜',
     award: '米其林指南入選餐廳',
     awardType: 'selected',
@@ -591,7 +627,8 @@ export const michelinList = [
     fallbackImage: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.supannigaeatingroom.com/',
     websiteLabel: 'Supanniga 官網',
@@ -603,6 +640,7 @@ export const michelinList = [
     number: 7,
     category: 'michelin',
     name: 'Baan Ice (Thonglor)',
+    shortName: 'Baan Ice 辛香泰南菜',
     subName: '道地辛香泰南家傳料理',
     award: '米其林必比登推介',
     awardType: 'bib',
@@ -618,7 +656,8 @@ export const michelinList = [
     fallbackImage: 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.baanice.com/',
     websiteLabel: 'Baan Ice 官網',
@@ -630,6 +669,7 @@ export const michelinList = [
     number: 8,
     category: 'michelin',
     name: 'KHAO (Ekkamai)',
+    shortName: 'KHAO 米其林一星泰菜',
     subName: '米倉美學・皇室與街頭泰菜現代演繹',
     award: '⭐ 米其林一星餐廳',
     awardType: 'star',
@@ -645,7 +685,8 @@ export const michelinList = [
     fallbackImage: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://khaorestaurants.com/',
     websiteLabel: 'KHAO 官方網站預約',
@@ -669,6 +710,7 @@ export const cannabisList = [
     number: 1,
     category: 'cannabis',
     name: 'GOLDEN HOUR BKK - Cannabis lounge & Dispensary, Bistro, Brunch',
+    shortName: 'GOLDEN HOUR 台灣人餐麻館',
     badge: '🇹🇼 正宗台灣人經營・複合式餐麻館',
     area: 'Asok / Sukhumvit 23',
     transportMode: 'walk',
@@ -682,7 +724,8 @@ export const cannabisList = [
     fallbackImage: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://linktr.ee/goldenhourbkk',
     websiteLabel: 'GOLDEN HOUR 官方傳送門',
@@ -694,6 +737,7 @@ export const cannabisList = [
     number: 2,
     category: 'cannabis',
     name: 'KANA PURE Cannabis Dispensary – Sukhumvit 11 (曼谷大麻店)',
+    shortName: 'KANA PURE (Soi 11)',
     badge: '🏥 醫療級明亮空間・飯店步行 2 分鐘',
     area: 'Sukhumvit 11',
     transportMode: 'walk',
@@ -707,7 +751,8 @@ export const cannabisList = [
     fallbackImage: 'https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1536819114556-1e10f967fb61?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1536819114556-1e10f967fb61?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.facebook.com/kanapure.th/',
     websiteLabel: 'KANA PURE 官方專頁',
@@ -719,6 +764,7 @@ export const cannabisList = [
     number: 3,
     category: 'cannabis',
     name: 'MedMen Weed Shop - Cannabis Dispensary',
+    shortName: 'MedMen Weed Shop (Soi 11)',
     badge: '🌙 營業至凌晨 3 點・Indoor 頂級品種',
     area: 'Sukhumvit 11 (近巷口)',
     transportMode: 'walk',
@@ -732,7 +778,8 @@ export const cannabisList = [
     fallbackImage: 'https://images.unsplash.com/photo-1536819114556-1e10f967fb61?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1536819114556-1e10f967fb61?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.google.com/maps/search/?api=1&query=MedMen+Weed+Shop+Sukhumvit+11+Bangkok',
     websiteLabel: '店家資訊與評價',
@@ -744,6 +791,7 @@ export const cannabisList = [
     number: 4,
     category: 'cannabis',
     name: 'Thai Cannabis Club - Soi 11',
+    shortName: 'Thai Cannabis Club (Soi 11)',
     badge: '🔬 實驗室認證・大型連鎖俱樂部',
     area: 'Sukhumvit 11',
     transportMode: 'walk',
@@ -757,7 +805,8 @@ export const cannabisList = [
     fallbackImage: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://www.thaiherb.club/',
     websiteLabel: 'Thai Cannabis Club 官網',
@@ -769,6 +818,7 @@ export const cannabisList = [
     number: 5,
     category: 'cannabis',
     name: 'Siam Green Cannabis Co (Nana)',
+    shortName: 'Siam Green (Nana)',
     badge: '☕ 精品咖啡廳風格・寬敞社交 Lounge',
     area: 'Sukhumvit 主幹道 (近 BTS Nana)',
     transportMode: 'walk',
@@ -778,11 +828,12 @@ export const cannabisList = [
     noteLabel: '空間體驗',
     noteText: '從 BTS Nana 站走回飯店途中必經，精品級裝潢對初次體驗者非常友善無壓力。',
     tags: ['步行 8～10 分鐘', '精品咖啡廳風', '寬敞 Lounge', '支援刷卡與行動支付'],
-    image: 'https://siamgreenco.com/media/2026/05/IMG_0488-2.jpg',
-    fallbackImage: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1000&q=80',
+    fallbackImage: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1000&q=80',
     gallery: [
-      'https://siamgreenco.com/media/2026/05/IMG_0488-2.jpg',
-      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1000&q=80'
     ],
     websiteUrl: 'https://siamgreenco.com/',
     websiteLabel: 'Siam Green 官方網站',

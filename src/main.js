@@ -39,9 +39,62 @@ const state = {
     cannabis: false,
     extended: false
   },
+  filteredLists: {
+    spa: [],
+    michelin: [],
+    cannabis: [],
+    extended: []
+  },
   searchQuery: '',
   savedIds: loadSavedIds()
 };
+
+const preloadedUrlSet = new Set();
+function preloadImages(urls = []) {
+  for (const url of urls) {
+    if (!url || preloadedUrlSet.has(url)) continue;
+    preloadedUrlSet.add(url);
+    const img = new Image();
+    img.src = url;
+  }
+}
+
+/**
+ * 智慧型橫向滑動條定位：
+ * 只有當目標項目「超出目前橫向滑動條的可視範圍」時，才滾動一次（翻頁對齊），
+ * 若目標項目已經在可視範圍內，完全不重算、不觸發滾動！
+ */
+function scrollItemIntoViewIfOut(container, item, pad = 16) {
+  if (!container || !item) return;
+  const itemLeft = item.offsetLeft;
+  const itemRight = itemLeft + item.offsetWidth;
+  const viewLeft = container.scrollLeft;
+  const viewRight = viewLeft + container.clientWidth;
+
+  // 已在目前可視範圍內 -> 保持原位不動
+  if (itemLeft >= viewLeft + 4 && itemRight <= viewRight - 4) {
+    return;
+  }
+
+  const maxScroll = Math.max(0, container.scrollWidth - container.clientWidth);
+
+  // 超出右側可視邊界 -> 向右翻動一頁（讓該項目靠左對齊，後續數次點擊皆在可視範圍內）
+  if (itemRight > viewRight - 4) {
+    container.scrollTo({
+      left: Math.min(maxScroll, Math.max(0, itemLeft - pad)),
+      behavior: 'smooth'
+    });
+    return;
+  }
+
+  // 超出左側可視邊界 -> 向左翻動一頁（讓該項目靠右對齊）
+  if (itemLeft < viewLeft + 4) {
+    container.scrollTo({
+      left: Math.max(0, itemRight - container.clientWidth + pad),
+      behavior: 'smooth'
+    });
+  }
+}
 
 function loadSavedIds() {
   try {
@@ -98,6 +151,48 @@ function getAllPrimaryVenues() {
 // =========================================
 // 1. 渲染 TAB 1: Travelodge Sukhumvit 11 住宿與房型專區
 // =========================================
+function updateHotelPhotoInPlace() {
+  const totalPhotos = hotelInfo.gallery.length;
+  const idx = state.hotelPhotoIndex;
+  const currentPhoto = hotelInfo.gallery[idx] || hotelInfo.gallery[0];
+
+  const mainImg = document.getElementById('hotel-main-img');
+  if (mainImg) {
+    mainImg.src = currentPhoto.url;
+    mainImg.alt = currentPhoto.caption;
+    mainImg.setAttribute('data-open-hotel-lightbox', String(idx));
+  }
+
+  const passThumb = document.getElementById('stay-pass-thumb-box');
+  const passImg = document.getElementById('stay-pass-thumb-img');
+  if (passThumb) passThumb.setAttribute('data-open-hotel-lightbox', String(idx));
+  if (passImg) passImg.src = currentPhoto.url;
+
+  const mainTag = document.getElementById('hotel-main-tag');
+  if (mainTag) {
+    mainTag.textContent = `📸 ${currentPhoto.tag} (${idx + 1} / ${totalPhotos})`;
+  }
+
+  const mainCaption = document.getElementById('hotel-main-caption');
+  if (mainCaption) {
+    mainCaption.textContent = currentPhoto.caption;
+  }
+
+  const thumbStrip = document.getElementById('hotel-thumb-strip');
+  if (thumbStrip) {
+    thumbStrip.querySelectorAll('.hotel-thumb-item').forEach((el, i) => {
+      el.classList.toggle('active', i === idx);
+    });
+    const activeThumb = thumbStrip.querySelector('.hotel-thumb-item.active');
+    scrollItemIntoViewIfOut(thumbStrip, activeThumb, 16);
+  }
+
+  // 預載前後相鄰照片確保切換零延遲
+  const prevUrl = hotelInfo.gallery[(idx - 1 + totalPhotos) % totalPhotos]?.url;
+  const nextUrl = hotelInfo.gallery[(idx + 1) % totalPhotos]?.url;
+  preloadImages([prevUrl, nextUrl]);
+}
+
 function renderHotelSection() {
   const mount = document.getElementById('hotel-section-mount');
   if (!mount) return;
@@ -121,8 +216,8 @@ function renderHotelSection() {
     <!-- 專屬住宿憑證卡 (僅顯示於住宿資訊 Tab) -->
     <div class="stay-pass-banner" style="margin-bottom: 26px;">
       <div class="stay-pass-left">
-        <div class="stay-pass-thumb" data-open-hotel-lightbox="${state.hotelPhotoIndex}">
-          <img src="${currentPhoto.url}" alt="Travelodge Sukhumvit 11 Superior Premium Room" />
+        <div class="stay-pass-thumb" id="stay-pass-thumb-box" data-open-hotel-lightbox="${state.hotelPhotoIndex}">
+          <img id="stay-pass-thumb-img" src="${currentPhoto.url}" alt="Travelodge Sukhumvit 11 Superior Premium Room" />
           <span class="thumb-badge">入住房型</span>
         </div>
         <div class="stay-pass-info">
@@ -292,7 +387,7 @@ function renderHotelSection() {
       </div>
     </div>
 
-    <div class="hotel-full-gallery-grid">
+    <div class="hotel-full-gallery-grid" id="hotel-full-gallery-grid">
       ${filteredGallery
         .map(
           (item) => `
@@ -369,53 +464,70 @@ function renderHotelSection() {
     </div>
   `;
 
-  // 綁定飯店主圖左右切換按鈕
+  // 綁定飯店主圖左右切換按鈕（就地更新 DOM，不重繪整塊、不重置橫向滾動條）
   document.getElementById('hotel-prev-btn')?.addEventListener('click', (e) => {
     e.stopPropagation();
     state.hotelPhotoIndex = (state.hotelPhotoIndex - 1 + totalPhotos) % totalPhotos;
-    renderHotelSection();
+    updateHotelPhotoInPlace();
   });
 
   document.getElementById('hotel-next-btn')?.addEventListener('click', (e) => {
     e.stopPropagation();
     state.hotelPhotoIndex = (state.hotelPhotoIndex + 1) % totalPhotos;
-    renderHotelSection();
+    updateHotelPhotoInPlace();
   });
 
-  // 綁定飯店縮圖點擊切換
+  // 綁定飯店縮圖點擊切換（就地更新 DOM）
   mount.querySelectorAll('[data-photo-idx]').forEach((thumb) => {
     thumb.addEventListener('click', () => {
       state.hotelPhotoIndex = Number(thumb.getAttribute('data-photo-idx'));
-      renderHotelSection();
+      updateHotelPhotoInPlace();
     });
   });
 
-  // 確保選中的縮圖滾動至可視範圍
-  const activeThumb = mount.querySelector('.hotel-thumb-item.active');
-  activeThumb?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-
-  // 綁定 25 張圖輯分類篩選按鈕
+  // 綁定 25 張圖輯分類篩選按鈕（僅更新下方 25 張圖輯網格，不影響上方預覽區）
   mount.querySelectorAll('[data-hfilter]').forEach((btn) => {
     btn.addEventListener('click', () => {
       state.hotelGalleryFilter = btn.getAttribute('data-hfilter') || 'all';
-      renderHotelSection();
+      mount.querySelectorAll('[data-hfilter]').forEach((b) => {
+        b.classList.toggle('active', b.getAttribute('data-hfilter') === state.hotelGalleryFilter);
+      });
+      const gridEl = document.getElementById('hotel-full-gallery-grid');
+      if (gridEl) {
+        const nextFiltered = hotelInfo.gallery
+          .map((item, index) => ({ ...item, originalIndex: index }))
+          .filter((item) => state.hotelGalleryFilter === 'all' || item.group === state.hotelGalleryFilter);
+        gridEl.innerHTML = nextFiltered
+          .map(
+            (item) => `
+          <div class="hotel-gallery-card" data-open-hotel-lightbox="${item.originalIndex}">
+            <div class="hotel-gallery-img-wrap">
+              <img src="${item.url}" alt="${item.caption}" loading="lazy" />
+              <span class="hotel-gallery-num">#${String(item.originalIndex + 1).padStart(2, '0')}</span>
+              <span class="hotel-gallery-tag">${item.tag}</span>
+            </div>
+            <div class="hotel-gallery-card-caption">${item.caption}</div>
+          </div>
+        `
+          )
+          .join('');
+      }
     });
   });
 
-  // 綁定點擊飯店照片開啟全螢幕燈箱 Modal
-  mount.querySelectorAll('[data-open-hotel-lightbox]').forEach((el) => {
-    el.addEventListener('click', () => {
-      const idx = Number(el.getAttribute('data-open-hotel-lightbox'));
+  // 綁定點擊飯店照片開啟全螢幕燈箱 Modal（事件委派於 mount）
+  mount.addEventListener('click', (e) => {
+    const lightboxTrigger = e.target.closest('[data-open-hotel-lightbox]');
+    if (lightboxTrigger) {
+      const idx = Number(lightboxTrigger.getAttribute('data-open-hotel-lightbox'));
       openHotelLightboxModal(idx);
-    });
-  });
-
-  // 綁定快速分類跳轉
-  mount.querySelectorAll('[data-jump-tab]').forEach((card) => {
-    card.addEventListener('click', () => {
-      switchTab(card.getAttribute('data-jump-tab'));
+      return;
+    }
+    const jumpCard = e.target.closest('[data-jump-tab]');
+    if (jumpCard) {
+      switchTab(jumpCard.getAttribute('data-jump-tab'));
       window.scrollTo({ top: document.getElementById('sticky-nav').offsetTop - 10, behavior: 'smooth' });
-    });
+    }
   });
 }
 
@@ -426,60 +538,74 @@ function openHotelLightboxModal(startIndex = 0) {
   const mount = document.getElementById('modal-body-mount');
   if (!modal || !mount) return;
 
-  const renderModalContent = () => {
-    const photo = hotelInfo.gallery[currentIdx] || hotelInfo.gallery[0];
-    mount.innerHTML = `
-      <div class="modal-gallery-main">
-        <img src="${photo.url}" alt="${photo.caption}" />
-        <button type="button" class="hotel-nav-arrow prev" id="modal-hotel-prev" aria-label="上一張">‹</button>
-        <button type="button" class="hotel-nav-arrow next" id="modal-hotel-next" aria-label="下一張">›</button>
-        <span class="hotel-photo-tag">📸 ${photo.tag} (${currentIdx + 1} / ${total})</span>
-      </div>
-      <div class="modal-thumbs">
-        ${hotelInfo.gallery
-          .map(
-            (item, idx) => `
-          <div class="modal-thumb ${idx === currentIdx ? 'active' : ''}" data-modal-hidx="${idx}" style="flex-shrink:0;">
-            <img src="${item.url}" alt="${item.tag}" loading="lazy" />
-          </div>
-        `
-          )
-          .join('')}
-      </div>
-      <div class="modal-content-pad">
-        <h3 id="modal-title" class="venue-title" style="font-size:1.25rem;margin-bottom:6px;">${photo.caption}</h3>
-        <p class="venue-subtitle" style="margin-bottom:0;">Travelodge Sukhumvit 11 — Superior Premium Room（12/18 - 12/20 雙人房）</p>
-      </div>
-    `;
+  const photo = hotelInfo.gallery[currentIdx] || hotelInfo.gallery[0];
+  mount.innerHTML = `
+    <div class="modal-gallery-main">
+      <img id="modal-hotel-img" src="${photo.url}" alt="${photo.caption}" />
+      <button type="button" class="hotel-nav-arrow prev" id="modal-hotel-prev" aria-label="上一張">‹</button>
+      <button type="button" class="hotel-nav-arrow next" id="modal-hotel-next" aria-label="下一張">›</button>
+      <span class="hotel-photo-tag" id="modal-hotel-tag">📸 ${photo.tag} (${currentIdx + 1} / ${total})</span>
+    </div>
+    <div class="modal-thumbs" id="modal-hotel-thumbs">
+      ${hotelInfo.gallery
+        .map(
+          (item, idx) => `
+        <div class="modal-thumb ${idx === currentIdx ? 'active' : ''}" data-modal-hidx="${idx}" style="flex-shrink:0;">
+          <img src="${item.url}" alt="${item.tag}" loading="lazy" />
+        </div>
+      `
+        )
+        .join('')}
+    </div>
+    <div class="modal-content-pad">
+      <h3 id="modal-title" class="venue-title" style="font-size:1.25rem;margin-bottom:6px;">${photo.caption}</h3>
+      <p class="venue-subtitle" style="margin-bottom:0;">Travelodge Sukhumvit 11 — Superior Premium Room（12/18 - 12/20 雙人房）</p>
+    </div>
+  `;
 
-    mount.querySelector('#modal-hotel-prev')?.addEventListener('click', () => {
-      currentIdx = (currentIdx - 1 + total) % total;
-      state.hotelPhotoIndex = currentIdx;
-      renderModalContent();
-      renderHotelSection();
-    });
-
-    mount.querySelector('#modal-hotel-next')?.addEventListener('click', () => {
-      currentIdx = (currentIdx + 1) % total;
-      state.hotelPhotoIndex = currentIdx;
-      renderModalContent();
-      renderHotelSection();
-    });
-
-    mount.querySelectorAll('[data-modal-hidx]').forEach((t) => {
-      t.addEventListener('click', () => {
-        currentIdx = Number(t.getAttribute('data-modal-hidx'));
-        state.hotelPhotoIndex = currentIdx;
-        renderModalContent();
-        renderHotelSection();
+  const updateModalInPlace = () => {
+    const p = hotelInfo.gallery[currentIdx] || hotelInfo.gallery[0];
+    const imgEl = document.getElementById('modal-hotel-img');
+    const tagEl = document.getElementById('modal-hotel-tag');
+    const titleEl = document.getElementById('modal-title');
+    const thumbsEl = document.getElementById('modal-hotel-thumbs');
+    if (imgEl) {
+      imgEl.src = p.url;
+      imgEl.alt = p.caption;
+    }
+    if (tagEl) tagEl.textContent = `📸 ${p.tag} (${currentIdx + 1} / ${total})`;
+    if (titleEl) titleEl.textContent = p.caption;
+    if (thumbsEl) {
+      thumbsEl.querySelectorAll('.modal-thumb').forEach((t, i) => {
+        t.classList.toggle('active', i === currentIdx);
       });
-    });
-
-    const activeModalThumb = mount.querySelector('.modal-thumb.active');
-    activeModalThumb?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      const activeThumb = thumbsEl.querySelector('.modal-thumb.active');
+      scrollItemIntoViewIfOut(thumbsEl, activeThumb, 16);
+    }
+    state.hotelPhotoIndex = currentIdx;
+    updateHotelPhotoInPlace();
   };
 
-  renderModalContent();
+  mount.querySelector('#modal-hotel-prev')?.addEventListener('click', () => {
+    currentIdx = (currentIdx - 1 + total) % total;
+    updateModalInPlace();
+  });
+
+  mount.querySelector('#modal-hotel-next')?.addEventListener('click', () => {
+    currentIdx = (currentIdx + 1) % total;
+    updateModalInPlace();
+  });
+
+  mount.querySelectorAll('[data-modal-hidx]').forEach((t) => {
+    t.addEventListener('click', () => {
+      currentIdx = Number(t.getAttribute('data-modal-hidx'));
+      updateModalInPlace();
+    });
+  });
+
+  const thumbsEl = document.getElementById('modal-hotel-thumbs');
+  const activeModalThumb = thumbsEl?.querySelector('.modal-thumb.active');
+  scrollItemIntoViewIfOut(thumbsEl, activeModalThumb, 16);
   modal.classList.remove('hidden');
   modal.setAttribute('aria-hidden', 'false');
 }
@@ -629,29 +755,18 @@ function createVenueCardHTML(item) {
 }
 
 // =========================================
-// 4. 互動式分類主視窗舞台 (左右滑動選店瀏覽) & 網格渲染
+// 4. 互動式分類主視窗舞台 (左右滑動選店 & 店內多圖流暢切換)
 // =========================================
-function getShortVenueName(name) {
-  return name.split(' – ')[0].split(' - ')[0].split('（')[0].trim();
+function getShortVenueName(itemOrName) {
+  if (!itemOrName) return '';
+  if (typeof itemOrName === 'object') {
+    if (itemOrName.shortName) return itemOrName.shortName;
+    return getShortVenueName(itemOrName.name || '');
+  }
+  return String(itemOrName).split(' – ')[0].split(' - ')[0].split('（')[0].trim();
 }
 
-function renderCategorySpotlight(categoryKey, items, spotlightMountId, gridMountId) {
-  const spotMount = document.getElementById(spotlightMountId);
-  const gridMount = document.getElementById(gridMountId);
-  if (!spotMount) return;
-
-  if (!items.length) {
-    spotMount.innerHTML = `<div class="empty-state-box" style="margin-bottom:24px;"><h3>找不到符合條件的店家</h3><p>請嘗試切換右上角篩選條件或清除搜尋關鍵字。</p></div>`;
-    if (gridMount) gridMount.classList.add('hidden');
-    return;
-  }
-
-  let currentIdx = state.spotlightIndex[categoryKey] || 0;
-  if (currentIdx >= items.length || currentIdx < 0) {
-    currentIdx = 0;
-    state.spotlightIndex[categoryKey] = 0;
-  }
-
+function buildSpotlightStageHTML(categoryKey, items, currentIdx) {
   const item = items[currentIdx];
   const photos = item.gallery && item.gallery.length ? item.gallery : [item.image];
   let photoIdx = state.spotlightPhotoIdx[categoryKey] || 0;
@@ -661,7 +776,6 @@ function renderCategorySpotlight(categoryKey, items, spotlightMountId, gridMount
   }
   const activePhoto = photos[photoIdx] || item.image;
   const isSaved = state.savedIds.includes(item.id);
-  const isGridOpen = Boolean(state.showFullGrid[categoryKey]) || Boolean(state.searchQuery.trim());
 
   const prevIdx = (currentIdx - 1 + items.length) % items.length;
   const nextIdx = (currentIdx + 1) % items.length;
@@ -686,14 +800,274 @@ function renderCategorySpotlight(categoryKey, items, spotlightMountId, gridMount
       ? '🌿 經營背景與特色優勢'
       : '✨ 主打特色與必去亮點';
 
+  const hasMultiPhotos = photos.length > 1;
+
+  return `
+    <div class="hotel-gallery-stage">
+      <div class="hotel-main-photo-wrap">
+        <img
+          id="spot-main-img-${categoryKey}"
+          src="${activePhoto}"
+          alt="${item.name}"
+          data-open-modal="${item.id}"
+          style="cursor: zoom-in;"
+          title="點擊放大檢視高畫質大圖"
+          onerror="this.onerror=null;this.src='${item.fallbackImage || item.image}';"
+        />
+        <span class="hotel-photo-tag" id="spot-photo-badge-${categoryKey}">
+          📸 實景 ${photoIdx + 1} / ${photos.length}｜#${String(currentIdx + 1).padStart(2, '0')} ${getShortVenueName(item)}
+        </span>
+        <button
+          type="button"
+          class="venue-save-btn ${isSaved ? 'saved' : ''}"
+          data-toggle-save="${item.id}"
+          style="top: 14px; right: 14px; z-index: 6;"
+        >
+          ${isSaved ? '♥ 已收藏' : '♡ 收藏'}
+        </button>
+        <button
+          type="button"
+          class="hotel-nav-arrow prev"
+          ${hasMultiPhotos ? `data-spot-photo-prev="${categoryKey}" title="上一張店內實景照片"` : `data-spot-prev="${categoryKey}" title="上一間店：${prevItem.name}"`}
+          aria-label="上一張照片"
+        >‹</button>
+        <button
+          type="button"
+          class="hotel-nav-arrow next"
+          ${hasMultiPhotos ? `data-spot-photo-next="${categoryKey}" title="下一張店內實景照片"` : `data-spot-next="${categoryKey}" title="下一間店：${nextItem.name}"`}
+          aria-label="下一張照片"
+        >›</button>
+        <div class="hotel-photo-caption" id="spot-photo-caption-${categoryKey}">
+          <span>${item.distanceBadge} — ${getShortVenueName(item)}（照片 ${photoIdx + 1} / ${photos.length}）</span>
+        </div>
+      </div>
+
+      <!-- 底部：該店每一張照片縮圖切換列 + 快速跳店/放大按鈕 -->
+      <div class="spotlight-subbar">
+        <div class="spotlight-subphotos" id="spot-subphotos-${categoryKey}">
+          ${photos
+            .map(
+              (pUrl, pIdx) => `
+            <div
+              class="hotel-thumb-item ${pIdx === photoIdx ? 'active' : ''}"
+              data-spot-photo-cat="${categoryKey}"
+              data-spot-photo-idx="${pIdx}"
+              title="查看第 ${pIdx + 1} 張實景照片"
+            >
+              <img src="${pUrl}" alt="${item.name} 照片 ${pIdx + 1}" onerror="this.onerror=null;this.src='${item.fallbackImage || item.image}';" />
+            </div>
+          `
+            )
+            .join('')}
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <button type="button" class="spotlight-zoom-btn" data-spot-prev="${categoryKey}" title="切換至上一間：${getShortVenueName(prevItem)}">
+            ⏮ 上一間
+          </button>
+          <button type="button" class="spotlight-zoom-btn" data-spot-next="${categoryKey}" title="切換至下一間：${getShortVenueName(nextItem)}">
+            下一間 ⏭
+          </button>
+          <button type="button" class="spotlight-zoom-btn" data-open-modal="${item.id}">
+            🔍 放大 (${photos.length})
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右側：選中店家的完整攻略資訊 -->
+    <div class="hotel-details-pane spotlight-details-pane">
+      <div>
+        <div class="spotlight-badge-row">
+          ${badgeBannerHTML}
+          <span class="spotlight-distance-chip">${item.distanceBadge}</span>
+        </div>
+
+        <h2 class="hotel-pane-title" style="font-size: 1.65rem; margin-bottom: 4px;">${item.name}</h2>
+        <p class="hotel-pane-thai">${item.subName ? `${item.subName}｜📍 ${item.area}` : `📍 所在區域：${item.area}`}</p>
+
+        ${
+          item.tags && item.tags.length
+            ? `
+          <div class="venue-tags" style="margin-bottom: 16px;">
+            ${item.tags.map((t) => `<span class="venue-tag">${t}</span>`).join('')}
+          </div>
+        `
+            : ''
+        }
+
+        <div class="venue-info-list" style="margin-bottom: 18px;">
+          <div class="info-row">
+            <strong>🚕 距離與交通（從 Travelodge Sukhumvit 11 出發）</strong>
+            <span>${item.distanceDetail}</span>
+          </div>
+          <div class="info-row">
+            <strong>${firstRowLabel}</strong>
+            <span>${item.highlight}</span>
+          </div>
+          ${
+            item.noteText
+              ? `
+          <div class="info-row">
+            <strong>💡 ${item.noteLabel || '重點提示'}</strong>
+            <span>${item.noteText}</span>
+          </div>
+          `
+              : ''
+          }
+        </div>
+      </div>
+
+      <div>
+        <div class="hotel-action-row" style="margin-bottom: 16px;">
+          <a href="${item.websiteUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-emerald">
+            🌐 ${item.websiteLabel || '官方網站'}
+          </a>
+          <a href="${item.mapsUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-gold">
+            📍 Google Maps 導航
+          </a>
+          <button type="button" class="btn btn-outline" data-copy-text="${item.grabSearch || item.name}">
+            🚕 複製店名叫 Grab
+          </button>
+        </div>
+
+        <!-- 底部快速前後切換店家導覽列 -->
+        <div class="spotlight-bottom-pager">
+          <button type="button" class="pager-nav-btn" data-spot-prev="${categoryKey}">
+            <span class="pager-dir">← 上一間店</span>
+            <strong class="pager-venue-name">${getShortVenueName(prevItem)}</strong>
+          </button>
+          <div class="pager-indicator">
+            第 ${currentIdx + 1} / ${items.length} 間
+          </div>
+          <button type="button" class="pager-nav-btn align-right" data-spot-next="${categoryKey}">
+            <span class="pager-dir">下一間店 →</span>
+            <strong class="pager-venue-name">${getShortVenueName(nextItem)}</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * 就地切換「該間店的每一張照片」（不重繪卡片、完全不動頂部店家橫向滑動條！）
+ */
+function updateSpotlightPhotoInPlace(categoryKey) {
+  const items = state.filteredLists[categoryKey] || [];
+  const currentIdx = state.spotlightIndex[categoryKey] || 0;
+  const item = items[currentIdx];
+  if (!item) return;
+
+  const photos = item.gallery && item.gallery.length ? item.gallery : [item.image];
+  let photoIdx = state.spotlightPhotoIdx[categoryKey] || 0;
+  if (photoIdx >= photos.length || photoIdx < 0) {
+    photoIdx = 0;
+    state.spotlightPhotoIdx[categoryKey] = 0;
+  }
+
+  const activePhoto = photos[photoIdx] || item.image;
+  const imgEl = document.getElementById(`spot-main-img-${categoryKey}`);
+  const badgeEl = document.getElementById(`spot-photo-badge-${categoryKey}`);
+  const capEl = document.getElementById(`spot-photo-caption-${categoryKey}`);
+  const subPhotosEl = document.getElementById(`spot-subphotos-${categoryKey}`);
+
+  if (imgEl) {
+    imgEl.src = activePhoto;
+  }
+  if (badgeEl) {
+    badgeEl.textContent = `📸 實景 ${photoIdx + 1} / ${photos.length}｜#${String(currentIdx + 1).padStart(2, '0')} ${getShortVenueName(item)}`;
+  }
+  if (capEl) {
+    capEl.innerHTML = `<span>${item.distanceBadge} — ${getShortVenueName(item)}（照片 ${photoIdx + 1} / ${photos.length}）</span>`;
+  }
+  if (subPhotosEl) {
+    subPhotosEl.querySelectorAll('.hotel-thumb-item').forEach((t, i) => {
+      t.classList.toggle('active', i === photoIdx);
+    });
+    const activeThumb = subPhotosEl.querySelector('.hotel-thumb-item.active');
+    scrollItemIntoViewIfOut(subPhotosEl, activeThumb, 12);
+  }
+
+  // 預載同店其他照片
+  preloadImages(photos);
+}
+
+/**
+ * 就地切換「每一間店」（保留頂部橫向店家滑動條 DOM，僅在超出可視範圍時滾動一次！）
+ */
+function updateSpotlightVenueInPlace(categoryKey) {
+  const items = state.filteredLists[categoryKey] || [];
+  if (!items.length) return;
+
+  let currentIdx = state.spotlightIndex[categoryKey] || 0;
+  if (currentIdx >= items.length || currentIdx < 0) {
+    currentIdx = 0;
+    state.spotlightIndex[categoryKey] = 0;
+  }
+
+  const counterEl = document.getElementById(`spot-counter-${categoryKey}`);
+  if (counterEl) {
+    counterEl.textContent = `第 ${currentIdx + 1} / ${items.length} 間`;
+  }
+
+  const railEl = document.getElementById(`spot-rail-${categoryKey}`);
+  if (railEl) {
+    railEl.querySelectorAll('.spotlight-shop-pill').forEach((pill, idx) => {
+      pill.classList.toggle('active', idx === currentIdx);
+    });
+    const activePill = railEl.querySelector('.spotlight-shop-pill.active');
+    scrollItemIntoViewIfOut(railEl, activePill, 16);
+  }
+
+  const stageEl = document.getElementById(`spot-touch-zone-${categoryKey}`);
+  if (stageEl) {
+    stageEl.innerHTML = buildSpotlightStageHTML(categoryKey, items, currentIdx);
+  }
+
+  // 預載目前店家的所有實景圖與前後相鄰店家照片，確保切換零卡頓
+  const curItem = items[currentIdx];
+  const prevItem = items[(currentIdx - 1 + items.length) % items.length];
+  const nextItem = items[(currentIdx + 1) % items.length];
+  preloadImages([
+    ...(curItem?.gallery || []),
+    ...(prevItem?.gallery || []),
+    ...(nextItem?.gallery || [])
+  ]);
+}
+
+function renderCategorySpotlight(categoryKey, items, spotlightMountId, gridMountId) {
+  const spotMount = document.getElementById(spotlightMountId);
+  const gridMount = document.getElementById(gridMountId);
+  if (!spotMount) return;
+
+  state.filteredLists[categoryKey] = items;
+
+  if (!items.length) {
+    spotMount.innerHTML = `<div class="empty-state-box" style="margin-bottom:24px;"><h3>找不到符合條件的店家</h3><p>請嘗試切換右上角篩選條件或清除搜尋關鍵字。</p></div>`;
+    if (gridMount) gridMount.classList.add('hidden');
+    return;
+  }
+
+  let currentIdx = state.spotlightIndex[categoryKey] || 0;
+  if (currentIdx >= items.length || currentIdx < 0) {
+    currentIdx = 0;
+    state.spotlightIndex[categoryKey] = 0;
+  }
+
+  const isGridOpen = Boolean(state.showFullGrid[categoryKey]) || Boolean(state.searchQuery.trim());
+  const prevIdx = (currentIdx - 1 + items.length) % items.length;
+  const nextIdx = (currentIdx + 1) % items.length;
+  const prevItem = items[prevIdx];
+  const nextItem = items[nextIdx];
+
   spotMount.innerHTML = `
     <div class="venue-spotlight-card" data-spot-category="${categoryKey}">
       <!-- 頂部：可左右滑動選店導覽列 -->
       <div class="spotlight-rail-header">
         <div class="spotlight-rail-title">
           <span class="rail-pulse-dot"></span>
-          <span>👆 左右滑動或點擊下方卡片切換店家</span>
-          <strong class="rail-counter-pill">第 ${currentIdx + 1} / ${items.length} 間</strong>
+          <span>👆 頂部切換「每一間店」・左下圖片箭頭切換「該店每一張實景照片」</span>
+          <strong class="rail-counter-pill" id="spot-counter-${categoryKey}">第 ${currentIdx + 1} / ${items.length} 間</strong>
         </div>
         <div class="spotlight-rail-controls">
           <button type="button" class="rail-step-btn" data-spot-prev="${categoryKey}" title="上一間：${prevItem.name}">
@@ -727,7 +1101,7 @@ function renderCategorySpotlight(categoryKey, items, spotlightMountId, gridMount
                 <span class="shop-pill-num">#${String(idx + 1).padStart(2, '0')}</span>
                 <span class="shop-pill-dist">${v.distanceBadge}</span>
               </div>
-              <div class="shop-pill-name">${getShortVenueName(v.name)}</div>
+              <div class="shop-pill-name">${getShortVenueName(v)}</div>
             </div>
           </button>
         `
@@ -737,142 +1111,7 @@ function renderCategorySpotlight(categoryKey, items, spotlightMountId, gridMount
 
       <!-- 主視窗雙欄舞台 (左：3:2 零出血互動畫框 / 右：完整店家攻略) -->
       <div class="hotel-hero-grid spotlight-stage-grid" id="spot-touch-zone-${categoryKey}">
-        <div class="hotel-gallery-stage">
-          <div class="hotel-main-photo-wrap">
-            <img
-              src="${activePhoto}"
-              alt="${item.name}"
-              data-open-modal="${item.id}"
-              style="cursor: zoom-in;"
-              title="點擊放大檢視高畫質大圖"
-              onerror="this.onerror=null;this.src='${item.fallbackImage || item.image}';"
-            />
-            <span class="hotel-photo-tag">
-              #${String(currentIdx + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}｜📍 ${item.area}
-            </span>
-            <button
-              type="button"
-              class="venue-save-btn ${isSaved ? 'saved' : ''}"
-              data-toggle-save="${item.id}"
-              style="top: 14px; right: 14px; z-index: 6;"
-            >
-              ${isSaved ? '♥ 已收藏' : '♡ 收藏'}
-            </button>
-            <button
-              type="button"
-              class="hotel-nav-arrow prev"
-              data-spot-prev="${categoryKey}"
-              title="上一間店：${prevItem.name}"
-              aria-label="上一間店"
-            >‹</button>
-            <button
-              type="button"
-              class="hotel-nav-arrow next"
-              data-spot-next="${categoryKey}"
-              title="下一間店：${nextItem.name}"
-              aria-label="下一間店"
-            >›</button>
-            <div class="hotel-photo-caption">
-              <span>${item.distanceBadge} — ${getShortVenueName(item.name)}</span>
-            </div>
-          </div>
-
-          <!-- 底部：同店照片切換 & 快速跳店列 -->
-          <div class="spotlight-subbar">
-            <div class="spotlight-subphotos">
-              ${photos
-                .map(
-                  (pUrl, pIdx) => `
-                <div
-                  class="hotel-thumb-item ${pIdx === photoIdx ? 'active' : ''}"
-                  data-spot-photo-cat="${categoryKey}"
-                  data-spot-photo-idx="${pIdx}"
-                  title="切換店內實景圖 ${pIdx + 1}"
-                >
-                  <img src="${pUrl}" alt="${item.name} 照片 ${pIdx + 1}" onerror="this.onerror=null;this.src='${item.fallbackImage || item.image}';" />
-                </div>
-              `
-                )
-                .join('')}
-            </div>
-            <button type="button" class="spotlight-zoom-btn" data-open-modal="${item.id}">
-              🔍 放大檢視大圖 (${photos.length} 張)
-            </button>
-          </div>
-        </div>
-
-        <!-- 右側：選中店家的完整攻略資訊 -->
-        <div class="hotel-details-pane spotlight-details-pane">
-          <div>
-            <div class="spotlight-badge-row">
-              ${badgeBannerHTML}
-              <span class="spotlight-distance-chip">${item.distanceBadge}</span>
-            </div>
-
-            <h2 class="hotel-pane-title" style="font-size: 1.65rem; margin-bottom: 4px;">${item.name}</h2>
-            <p class="hotel-pane-thai">${item.subName ? `${item.subName}｜📍 ${item.area}` : `📍 所在區域：${item.area}`}</p>
-
-            ${
-              item.tags && item.tags.length
-                ? `
-              <div class="venue-tags" style="margin-bottom: 16px;">
-                ${item.tags.map((t) => `<span class="venue-tag">${t}</span>`).join('')}
-              </div>
-            `
-                : ''
-            }
-
-            <div class="venue-info-list" style="margin-bottom: 18px;">
-              <div class="info-row">
-                <strong>🚕 距離與交通（從 Travelodge Sukhumvit 11 出發）</strong>
-                <span>${item.distanceDetail}</span>
-              </div>
-              <div class="info-row">
-                <strong>${firstRowLabel}</strong>
-                <span>${item.highlight}</span>
-              </div>
-              ${
-                item.noteText
-                  ? `
-              <div class="info-row">
-                <strong>💡 ${item.noteLabel || '重點提示'}</strong>
-                <span>${item.noteText}</span>
-              </div>
-              `
-                  : ''
-              }
-            </div>
-          </div>
-
-          <div>
-            <div class="hotel-action-row" style="margin-bottom: 16px;">
-              <a href="${item.websiteUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-emerald">
-                🌐 ${item.websiteLabel || '官方網站'}
-              </a>
-              <a href="${item.mapsUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-gold">
-                📍 Google Maps 導航
-              </a>
-              <button type="button" class="btn btn-outline" data-copy-text="${item.grabSearch || item.name}">
-                🚕 複製店名叫 Grab
-              </button>
-            </div>
-
-            <!-- 底部快速前後切換店家導覽列 -->
-            <div class="spotlight-bottom-pager">
-              <button type="button" class="pager-nav-btn" data-spot-prev="${categoryKey}">
-                <span class="pager-dir">← 上一間</span>
-                <strong class="pager-venue-name">${getShortVenueName(prevItem.name)}</strong>
-              </button>
-              <div class="pager-indicator">
-                ${currentIdx + 1} / ${items.length}
-              </div>
-              <button type="button" class="pager-nav-btn align-right" data-spot-next="${categoryKey}">
-                <span class="pager-dir">下一間 →</span>
-                <strong class="pager-venue-name">${getShortVenueName(nextItem.name)}</strong>
-              </button>
-            </div>
-          </div>
-        </div>
+        ${buildSpotlightStageHTML(categoryKey, items, currentIdx)}
       </div>
     </div>
   `;
@@ -881,15 +1120,11 @@ function renderCategorySpotlight(categoryKey, items, spotlightMountId, gridMount
     gridMount.classList.toggle('hidden', !isGridOpen);
   }
 
-  // 讓目前選中的店家膠囊平滑滾動置中於水平軌道內
-  const railEl = document.getElementById(`spot-rail-${categoryKey}`);
-  const activePill = railEl?.querySelector('.spotlight-shop-pill.active');
-  if (railEl && activePill) {
-    const targetLeft = activePill.offsetLeft - railEl.clientWidth / 2 + activePill.clientWidth / 2;
-    railEl.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
-  }
+  // 初次渲染時預載首店與相鄰店家圖片
+  const curItem = items[currentIdx];
+  preloadImages([...(curItem?.gallery || []), ...(nextItem?.gallery || [])]);
 
-  // 綁定觸控左右滑動手勢 (手機/平板直接左右滑動主視窗即可切換店家)
+  // 綁定觸控左右滑動手勢
   const touchZone = document.getElementById(`spot-touch-zone-${categoryKey}`);
   if (touchZone) {
     let startX = 0;
@@ -908,13 +1143,12 @@ function renderCategorySpotlight(categoryKey, items, spotlightMountId, gridMount
         const dx = e.changedTouches[0].clientX - startX;
         const dy = e.changedTouches[0].clientY - startY;
         if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-          if (dx < 0) {
-            state.spotlightIndex[categoryKey] = nextIdx;
-          } else {
-            state.spotlightIndex[categoryKey] = prevIdx;
-          }
+          const list = state.filteredLists[categoryKey] || [];
+          if (!list.length) return;
+          const cur = state.spotlightIndex[categoryKey] || 0;
+          state.spotlightIndex[categoryKey] = dx < 0 ? (cur + 1) % list.length : (cur - 1 + list.length) % list.length;
           state.spotlightPhotoIdx[categoryKey] = 0;
-          renderAllGrids();
+          updateSpotlightVenueInPlace(categoryKey);
         }
       },
       { passive: true }
@@ -926,6 +1160,7 @@ function matchesQuery(item, q) {
   if (!q) return true;
   const hay = [
     item.name,
+    item.shortName,
     item.subName,
     item.area,
     item.award,
@@ -1154,7 +1389,6 @@ function handleGlobalSearch(query) {
   renderAllGrids();
 
   if (trimmed) {
-    // 計算總命中筆數並顯示所有命中的分頁區塊
     const primaryMatches = getAllPrimaryVenues().filter((v) => matchesQuery(v, trimmed)).length;
     const extMatches = extendedSections.reduce(
       (acc, g) =>
@@ -1170,7 +1404,6 @@ function handleGlobalSearch(query) {
     if (keywordDisplay) keywordDisplay.textContent = trimmed;
     if (countDisplay) countDisplay.textContent = String(total);
 
-    // 搜尋時展開所有含有結果的攻略分頁方便一次瀏覽
     document.getElementById('tab-hotel')?.classList.remove('active');
     document.getElementById('tab-spa')?.classList.add('active');
     document.getElementById('tab-michelin')?.classList.add('active');
@@ -1195,19 +1428,29 @@ function openVenueModal(venueId) {
   if (!modal || !mount) return;
 
   const photos = venue.gallery && venue.gallery.length ? venue.gallery : [venue.image];
+  let modalPhotoIdx = 0;
 
   mount.innerHTML = `
     <div class="modal-gallery-main">
       <img id="modal-active-img" src="${photos[0]}" alt="${venue.name}" onerror="this.onerror=null;this.src='${venue.fallbackImage}';" />
+      ${
+        photos.length > 1
+          ? `
+        <button type="button" class="hotel-nav-arrow prev" id="modal-venue-prev" aria-label="上一張">‹</button>
+        <button type="button" class="hotel-nav-arrow next" id="modal-venue-next" aria-label="下一張">›</button>
+        <span class="hotel-photo-tag" id="modal-venue-tag">📸 實景圖 (1 / ${photos.length})</span>
+      `
+          : ''
+      }
     </div>
     ${
       photos.length > 1
         ? `
-      <div class="modal-thumbs">
+      <div class="modal-thumbs" id="modal-venue-thumbs">
         ${photos
           .map(
             (url, idx) => `
-          <div class="modal-thumb ${idx === 0 ? 'active' : ''}" data-modal-photo="${url}">
+          <div class="modal-thumb ${idx === 0 ? 'active' : ''}" data-modal-photo-idx="${idx}" style="flex-shrink:0;">
             <img src="${url}" alt="${venue.name} 圖輯 ${idx + 1}" onerror="this.onerror=null;this.src='${venue.fallbackImage}';" />
           </div>
         `
@@ -1261,13 +1504,35 @@ function openVenueModal(venueId) {
     </div>
   `;
 
-  mount.querySelectorAll('[data-modal-photo]').forEach((thumb) => {
+  const updateVenueModalPhoto = () => {
+    const mainImg = document.getElementById('modal-active-img');
+    const tagEl = document.getElementById('modal-venue-tag');
+    const thumbsEl = document.getElementById('modal-venue-thumbs');
+    if (mainImg) mainImg.src = photos[modalPhotoIdx];
+    if (tagEl) tagEl.textContent = `📸 實景圖 (${modalPhotoIdx + 1} / ${photos.length})`;
+    if (thumbsEl) {
+      thumbsEl.querySelectorAll('.modal-thumb').forEach((t, i) => {
+        t.classList.toggle('active', i === modalPhotoIdx);
+      });
+      const activeThumb = thumbsEl.querySelector('.modal-thumb.active');
+      scrollItemIntoViewIfOut(thumbsEl, activeThumb, 12);
+    }
+  };
+
+  mount.querySelector('#modal-venue-prev')?.addEventListener('click', () => {
+    modalPhotoIdx = (modalPhotoIdx - 1 + photos.length) % photos.length;
+    updateVenueModalPhoto();
+  });
+
+  mount.querySelector('#modal-venue-next')?.addEventListener('click', () => {
+    modalPhotoIdx = (modalPhotoIdx + 1) % photos.length;
+    updateVenueModalPhoto();
+  });
+
+  mount.querySelectorAll('[data-modal-photo-idx]').forEach((thumb) => {
     thumb.addEventListener('click', () => {
-      const url = thumb.getAttribute('data-modal-photo');
-      const mainImg = document.getElementById('modal-active-img');
-      if (mainImg && url) mainImg.src = url;
-      mount.querySelectorAll('.modal-thumb').forEach((t) => t.classList.remove('active'));
-      thumb.classList.add('active');
+      modalPhotoIdx = Number(thumb.getAttribute('data-modal-photo-idx'));
+      updateVenueModalPhoto();
     });
   });
 
@@ -1378,7 +1643,7 @@ function initApp() {
     showToast('🗑️ 已清空收藏清單');
   });
 
-  // 全域事件委派：收藏切換、開啟圖輯 Modal、複製店名
+  // 全域事件委派：收藏切換、切換店家、切換店內照片、開啟圖輯 Modal、複製店名
   document.addEventListener('click', (e) => {
     const saveBtn = e.target.closest('[data-toggle-save]');
     if (saveBtn) {
@@ -1392,10 +1657,16 @@ function initApp() {
         showToast('❤️ 已加入「我的收藏」清單！');
       }
       persistSavedIds();
-      renderAllGrids();
+      document.querySelectorAll(`[data-toggle-save="${id}"]`).forEach((btnEl) => {
+        const savedNow = state.savedIds.includes(id);
+        btnEl.classList.toggle('saved', savedNow);
+        btnEl.textContent = savedNow ? '♥ 已收藏' : '♡ 收藏';
+      });
+      renderSavedGrid();
       return;
     }
 
+    // 1. 切換「每一間店」：點擊頂部水平軌道店家卡片
     const spotSelect = e.target.closest('[data-spot-select]');
     if (spotSelect) {
       e.stopPropagation();
@@ -1404,39 +1675,72 @@ function initApp() {
       if (cat && !Number.isNaN(idx)) {
         state.spotlightIndex[cat] = idx;
         state.spotlightPhotoIdx[cat] = 0;
-        renderAllGrids();
+        updateSpotlightVenueInPlace(cat);
       }
       return;
     }
 
+    // 2. 切換「每一間店」：上一間店按鈕
     const spotPrev = e.target.closest('[data-spot-prev]');
     if (spotPrev) {
       e.stopPropagation();
       const cat = spotPrev.getAttribute('data-spot-prev');
       if (cat) {
-        const rail = document.getElementById(`spot-rail-${cat}`);
-        const count = rail ? rail.querySelectorAll('.spotlight-shop-pill').length : 1;
-        state.spotlightIndex[cat] = ((state.spotlightIndex[cat] || 0) - 1 + count) % Math.max(1, count);
+        const list = state.filteredLists[cat] || [];
+        const count = Math.max(1, list.length);
+        state.spotlightIndex[cat] = ((state.spotlightIndex[cat] || 0) - 1 + count) % count;
         state.spotlightPhotoIdx[cat] = 0;
-        renderAllGrids();
+        updateSpotlightVenueInPlace(cat);
       }
       return;
     }
 
+    // 3. 切換「每一間店」：下一間店按鈕
     const spotNext = e.target.closest('[data-spot-next]');
     if (spotNext) {
       e.stopPropagation();
       const cat = spotNext.getAttribute('data-spot-next');
       if (cat) {
-        const rail = document.getElementById(`spot-rail-${cat}`);
-        const count = rail ? rail.querySelectorAll('.spotlight-shop-pill').length : 1;
-        state.spotlightIndex[cat] = ((state.spotlightIndex[cat] || 0) + 1) % Math.max(1, count);
+        const list = state.filteredLists[cat] || [];
+        const count = Math.max(1, list.length);
+        state.spotlightIndex[cat] = ((state.spotlightIndex[cat] || 0) + 1) % count;
         state.spotlightPhotoIdx[cat] = 0;
-        renderAllGrids();
+        updateSpotlightVenueInPlace(cat);
       }
       return;
     }
 
+    // 4. 切換「該間店的每一張照片」：圖片左側上一張箭頭
+    const spotPhotoPrev = e.target.closest('[data-spot-photo-prev]');
+    if (spotPhotoPrev) {
+      e.stopPropagation();
+      const cat = spotPhotoPrev.getAttribute('data-spot-photo-prev');
+      if (cat) {
+        const list = state.filteredLists[cat] || [];
+        const curItem = list[state.spotlightIndex[cat] || 0];
+        const pCount = Math.max(1, curItem?.gallery?.length || 1);
+        state.spotlightPhotoIdx[cat] = ((state.spotlightPhotoIdx[cat] || 0) - 1 + pCount) % pCount;
+        updateSpotlightPhotoInPlace(cat);
+      }
+      return;
+    }
+
+    // 5. 切換「該間店的每一張照片」：圖片右側下一張箭頭
+    const spotPhotoNext = e.target.closest('[data-spot-photo-next]');
+    if (spotPhotoNext) {
+      e.stopPropagation();
+      const cat = spotPhotoNext.getAttribute('data-spot-photo-next');
+      if (cat) {
+        const list = state.filteredLists[cat] || [];
+        const curItem = list[state.spotlightIndex[cat] || 0];
+        const pCount = Math.max(1, curItem?.gallery?.length || 1);
+        state.spotlightPhotoIdx[cat] = ((state.spotlightPhotoIdx[cat] || 0) + 1) % pCount;
+        updateSpotlightPhotoInPlace(cat);
+      }
+      return;
+    }
+
+    // 6. 切換「該間店的每一張照片」：點擊下方縮圖
     const spotPhotoThumb = e.target.closest('[data-spot-photo-cat]');
     if (spotPhotoThumb) {
       e.stopPropagation();
@@ -1444,18 +1748,29 @@ function initApp() {
       const pIdx = Number(spotPhotoThumb.getAttribute('data-spot-photo-idx'));
       if (cat && !Number.isNaN(pIdx)) {
         state.spotlightPhotoIdx[cat] = pIdx;
-        renderAllGrids();
+        updateSpotlightPhotoInPlace(cat);
       }
       return;
     }
 
+    // 7. 展開 / 收合下方全店網格列表
     const toggleGridBtn = e.target.closest('[data-toggle-grid]');
     if (toggleGridBtn) {
       e.stopPropagation();
       const cat = toggleGridBtn.getAttribute('data-toggle-grid');
       if (cat) {
         state.showFullGrid[cat] = !state.showFullGrid[cat];
-        renderAllGrids();
+        const isOpen = Boolean(state.showFullGrid[cat]);
+        toggleGridBtn.classList.toggle('active', isOpen);
+        const count = (state.filteredLists[cat] || []).length;
+        toggleGridBtn.textContent = isOpen ? '🔼 收合下方全店列表' : `📋 展開全店卡片總覽 (${count})`;
+        const gridMap = {
+          spa: 'spa-grid-mount',
+          michelin: 'michelin-grid-mount',
+          cannabis: 'cannabis-grid-mount',
+          extended: 'extended-sections-mount'
+        };
+        document.getElementById(gridMap[cat])?.classList.toggle('hidden', !isOpen);
       }
       return;
     }
@@ -1476,7 +1791,7 @@ function initApp() {
     }
   });
 
-  // 關閉 Modal 與鍵盤左右鍵快速切換店家事件
+  // 關閉 Modal 與鍵盤左右鍵快速切換事件
   document.getElementById('modal-close-btn')?.addEventListener('click', closeVenueModal);
   document.getElementById('detail-modal')?.addEventListener('click', (e) => {
     if (e.target.id === 'detail-modal') closeVenueModal();
@@ -1490,6 +1805,16 @@ function initApp() {
     const activeInput = document.activeElement?.tagName === 'INPUT';
     if (modalOpen || activeInput) return;
 
+    if (state.activeTab === 'tab-hotel') {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        const total = hotelInfo.gallery.length;
+        const delta = e.key === 'ArrowRight' ? 1 : -1;
+        state.hotelPhotoIndex = (state.hotelPhotoIndex + delta + total) % total;
+        updateHotelPhotoInPlace();
+      }
+      return;
+    }
+
     const tabToCat = {
       'tab-spa': 'spa',
       'tab-michelin': 'michelin',
@@ -1500,13 +1825,12 @@ function initApp() {
     if (!cat) return;
 
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-      const rail = document.getElementById(`spot-rail-${cat}`);
-      const count = rail ? rail.querySelectorAll('.spotlight-shop-pill').length : 0;
-      if (count > 1) {
+      const list = state.filteredLists[cat] || [];
+      if (list.length > 1) {
         const delta = e.key === 'ArrowRight' ? 1 : -1;
-        state.spotlightIndex[cat] = ((state.spotlightIndex[cat] || 0) + delta + count) % count;
+        state.spotlightIndex[cat] = ((state.spotlightIndex[cat] || 0) + delta + list.length) % list.length;
         state.spotlightPhotoIdx[cat] = 0;
-        renderAllGrids();
+        updateSpotlightVenueInPlace(cat);
       }
     }
   });
