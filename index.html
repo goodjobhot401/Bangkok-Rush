@@ -4,319 +4,275 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pattaya 2026 0710-0713 FJUAD 20th 男子泰國行</title>
+  <title>曼谷 Travelodge Sukhumvit 11 周邊全攻略｜12/18 - 12/20 雙人奢華慢旅</title>
+  <meta name="description" content="12/18 - 12/20 曼谷 Travelodge Sukhumvit 11 (Superior Premium Room 雙人房) 住宿資訊與周邊步行/車程 20 分鐘內頂級 SPA、米其林必比登美食、中文友善大麻店全攻略。" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
   <div id="app">
-    <header>
-      <div class="header-content container">
-        <div class="logo-area">
-          <span class="badge">PATAYA 2026 0710-0713</span>
-          <h1>FJUAD 20th 男子泰國行</h1>
+    <!-- 頂部奢華視覺 Hero 與住宿核心資訊卡 -->
+    <header class="hero-header">
+      <div class="hero-overlay"></div>
+      <div class="hero-glow hero-glow-1"></div>
+      <div class="hero-glow hero-glow-2"></div>
+
+      <div class="container hero-container">
+        <div class="hero-top-badges">
+          <span class="trip-pill gold-pill">✈️ BANGKOK TRIP・12/18 – 12/20</span>
+          <span class="trip-pill glass-pill">🛏️ Superior Premium Room・雙人房 (2 晚)</span>
+          <span class="trip-pill glass-pill">🚕 步行 15–20 分 / 車程 20 分鐘生活圈</span>
         </div>
-        <nav class="nav-tabs">
-          <button class="nav-tab active" data-tab="voting-content"
-            onclick="window.switchTab('voting-content', event)">🏝️ 我要投票</button>
-          <button class="nav-tab" data-tab="stats-content" onclick="window.switchTab('stats-content', event)">📊
-            目前戰況</button>
-          <button class="nav-tab" data-tab="expense-content" onclick="window.switchTab('expense-content', event)">💰
-            代付支出</button>
-          <button class="nav-tab" data-tab="recommendation-content" onclick="window.switchTab('recommendation-content', event)">📍
-            行程推薦</button>
-        </nav>
-        <div id="user-info" class="user-info card hidden">
-          <span class="user-greeting">👋 哈囉, <strong id="current-user-name">...</strong></span>
-          <div class="vote-pills">
-            <span class="pill-label">我的票數：</span>
-            <div id="vote-dots" class="dots">
-              <span class="dot"></span>
-              <span class="dot"></span>
+
+        <h1 class="hero-title">
+          曼谷 <span class="gold-gradient-text">Travelodge Sukhumvit 11</span><br />
+          周邊全攻略指南
+        </h1>
+        <p class="hero-subtitle">
+          以 <strong>Travelodge Sukhumvit 11</strong> 為中心點，精選步行與 20 分鐘車程內的頂級連鎖 SPA、米其林星級與必比登美食、台灣人主理中文友善餐麻館與在地私房備案。
+        </p>
+
+        <!-- 常駐精簡版住宿憑證橫幅 (點擊可跳轉飯店詳情或直接開啟地圖/官網) -->
+        <div class="stay-pass-banner">
+          <div class="stay-pass-left">
+            <div class="stay-pass-thumb" id="hero-room-thumb">
+              <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80" alt="Travelodge Sukhumvit 11 Superior Premium Room" />
+              <span class="thumb-badge">入住房型</span>
             </div>
+            <div class="stay-pass-info">
+              <div class="stay-pass-label">ACCOMMODATION BASE・下榻飯店與房型</div>
+              <h2 class="stay-pass-hotel">Travelodge Sukhumvit 11</h2>
+              <div class="stay-pass-room">
+                <span class="room-highlight">Superior Premium Room</span>
+                <span class="room-divider">｜</span>
+                <span>高級尊貴雙人房（2 位成人）</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stay-pass-dates">
+            <div class="date-box">
+              <span class="date-label">CHECK-IN 入住</span>
+              <strong class="date-value">12/18 <small>(五)</small></strong>
+              <span class="date-sub">14:00 後</span>
+            </div>
+            <div class="date-arrow">
+              <span class="nights-pill">2 NIGHTS</span>
+              <div class="arrow-line"></div>
+            </div>
+            <div class="date-box">
+              <span class="date-label">CHECK-OUT 退房</span>
+              <strong class="date-value">12/20 <small>(日)</small></strong>
+              <span class="date-sub">12:00 前</span>
+            </div>
+          </div>
+
+          <div class="stay-pass-actions">
+            <a href="https://www.travelodgehotels.asia/travelodge-sukhumvit-11/" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">
+              🌐 飯店官網
+            </a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Travelodge+Sukhumvit+11+Bangkok" target="_blank" rel="noopener noreferrer" class="btn btn-glass btn-sm">
+              📍 Google Maps
+            </a>
           </div>
         </div>
       </div>
     </header>
 
-    <main class="container">
-      <section id="auth-error" class="error-section hidden">
-        <div class="error-card">
-          <h2>🚫 身份識別失敗</h2>
-          <p>請確認你的專屬連結是否正確，或聯絡主辦人 Evan。</p>
+    <!-- 黏性分類 Tab 導覽列 -->
+    <div class="sticky-nav-wrapper" id="sticky-nav">
+      <div class="container nav-container">
+        <nav class="main-tabs" role="tablist" aria-label="旅遊攻略分類">
+          <button class="tab-btn active" data-tab="tab-hotel" role="tab" aria-selected="true">
+            <span class="tab-icon">🏨</span>
+            <span class="tab-text">住宿與房型</span>
+            <span class="tab-tag">12/18-20</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-spa" role="tab" aria-selected="false">
+            <span class="tab-icon">💆‍♀️</span>
+            <span class="tab-text">頂級 SPA 按摩</span>
+            <span class="tab-count">9</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-michelin" role="tab" aria-selected="false">
+            <span class="tab-icon">🍽️</span>
+            <span class="tab-text">米其林必比登</span>
+            <span class="tab-count">8</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-cannabis" role="tab" aria-selected="false">
+            <span class="tab-icon">🌿</span>
+            <span class="tab-text">中文友善大麻店</span>
+            <span class="tab-count">5</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-extended" role="tab" aria-selected="false">
+            <span class="tab-icon">🧭</span>
+            <span class="tab-text">延伸備案全集</span>
+            <span class="tab-count">12</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-saved" role="tab" aria-selected="false">
+            <span class="tab-icon">❤️</span>
+            <span class="tab-text">我的收藏</span>
+            <span class="tab-count" id="saved-count-badge">0</span>
+          </button>
+        </nav>
+
+        <!-- 全站即時搜尋框 -->
+        <div class="search-bar-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="global-search-input" placeholder="搜尋店名、蟹肉炒飯、溫泉、台灣人經營..." aria-label="搜尋攻略內容" />
+          <button id="clear-search-btn" class="clear-search-btn hidden" title="清除搜尋">✕</button>
         </div>
+      </div>
+    </div>
+
+    <!-- 主內容區 -->
+    <main class="container main-content">
+      <!-- 搜尋結果提示列 -->
+      <div id="search-status-bar" class="search-status-bar hidden">
+        <div class="search-status-text">
+          正在顯示關鍵字「<strong id="search-keyword-display"></strong>」的跨分類搜尋結果（共 <span id="search-count-display">0</span> 筆）
+        </div>
+        <button id="reset-search-btn" class="btn btn-outline btn-sm">返回分類檢視</button>
+      </div>
+
+      <!-- TAB 1: 住宿中心點 & Superior Premium Room 房型專區 -->
+      <section id="tab-hotel" class="tab-panel active" role="tabpanel">
+        <div id="hotel-section-mount"></div>
       </section>
 
-      <div id="voting-content" class="hidden">
-        <section class="voting-section">
-          <div class="section-header">
-            <h2 class="section-title">🏠 Airbnb 區 <small>獨棟別墅、大空間首選</small></h2>
+      <!-- TAB 2: 一、大型連鎖按摩與頂級 SPA -->
+      <section id="tab-spa" class="tab-panel" role="tabpanel">
+        <div class="section-intro-bar">
+          <div>
+            <span class="section-eyebrow">SECTION 01・WELLNESS & RELAXATION</span>
+            <h2 class="section-heading">一、大型連鎖按摩與頂級 SPA</h2>
+            <p class="section-desc">從 Travelodge Sukhumvit 11 出發，步行 3～18 分鐘或搭乘 Grab 車程 15 分鐘內的 9 間精選名店。</p>
           </div>
-          <div id="airbnb-list" class="accommodation-grid">
-            <!-- Airbnb 卡片將由 JS 動態生成 -->
-            <div class="loading-placeholder">無資料</div>
+          <div class="filter-pills" data-filter-group="spa">
+            <button class="filter-pill active" data-filter="all">全部顯示 (9)</button>
+            <button class="filter-pill" data-filter="walk">🚶 可步行抵達 (4)</button>
+            <button class="filter-pill" data-filter="ride">🚕 搭車 10–15 分鐘 (5)</button>
           </div>
-        </section>
-
-        <section class="voting-section">
-          <div class="section-header">
-            <h2 class="section-title">🏨 度假村區 <small>飯店式服務、設施大玩家</small></h2>
-          </div>
-          <div id="resort-list" class="accommodation-grid">
-            <!-- 度假村卡片將由 JS 動態生成 -->
-            <div class="loading-placeholder">無資料</div>
-          </div>
-        </section>
-      </div>
-
-      <!-- 即時戰況分頁 -->
-      <div id="stats-content" class="hidden">
-        <section class="voting-section">
-          <div class="section-header">
-            <h2 class="section-title">📊 成員投票現況</h2>
-          </div>
-          <div id="user-progress-list" class="user-progress-grid">
-            <!-- 由 JS 動態生成每個人投票詳情 -->
-            <div class="loading-placeholder">無資料</div>
-          </div>
-        </section>
-
-        <section class="voting-section">
-          <div class="section-header">
-            <h2 class="section-title">🏁 飯店總排名</h2>
-          </div>
-          <div id="hotel-rankings" class="ranking-list card">
-            <!-- 排名資料 -->
-          </div>
-        </section>
-      </div>
-
-      <!-- 代付支出分頁 -->
-      <div id="expense-content" class="hidden">
-
-        <!-- 數據驗證錯誤警告 (防呆用) -->
-        <div id="data-validation-error" class="hidden"></div>
-
-        <!-- 頂部操作區 -->
-        <div class="expense-header-action">
-          <button class="btn btn-primary btn-lg" onclick="window.openExpenseModal()">
-            <span class="btn-icon">➕</span> 新增一筆支出
-          </button>
         </div>
 
-        <!-- 支出分頁內的子 Tab 切換 -->
-        <div class="sub-nav">
-          <button class="sub-tab active" data-subtab="expense-list-section"
-            onclick="window.switchSubTab('expense-list-section', event)">📝 支出明細</button>
-          <button class="sub-tab" data-subtab="expense-summary-section"
-            onclick="window.switchSubTab('expense-summary-section', event)">⚖️ 結算總覽</button>
-          <button class="sub-tab" data-subtab="personal-settlement-section"
-            onclick="window.switchSubTab('personal-settlement-section', event)">👤 我的帳務</button>
+        <!-- 歇業警告橫幅 -->
+        <div id="spa-warning-mount"></div>
+
+        <!-- SPA 卡片網格 -->
+        <div id="spa-grid-mount" class="venue-grid"></div>
+      </section>
+
+      <!-- TAB 3: 二、米其林星級與必比登推介美食 -->
+      <section id="tab-michelin" class="tab-panel" role="tabpanel">
+        <div class="section-intro-bar">
+          <div>
+            <span class="section-eyebrow">SECTION 02・MICHELIN GUIDE BANGKOK</span>
+            <h2 class="section-heading">二、米其林星級與必比登推介美食</h2>
+            <p class="section-desc">車程 10～18 分鐘內直達！囊括米其林一星皇室泰菜、連年蟬聯必比登豬肉米粉湯、爆量蟹腿炒飯與泰東餐酒館。</p>
+          </div>
+          <div class="filter-pills" data-filter-group="michelin">
+            <button class="filter-pill active" data-filter="all">全部美食 (8)</button>
+            <button class="filter-pill" data-filter="star">⭐ 米其林一星 (1)</button>
+            <button class="filter-pill" data-filter="bib">😋 必比登推介 (5)</button>
+            <button class="filter-pill" data-filter="selected">📕 米其林入選 (2)</button>
+          </div>
         </div>
 
-        <!-- 1. 支出明細列表 (預設顯示) -->
-        <section id="expense-list-section" class="sub-content">
-          <div class="section-header header-flex">
-            <h2 class="section-title">🗓️ 支出明細 <small>點擊按鈕可進行編輯或刪除</small></h2>
-            <div class="header-rate-info"></div>
-          </div>
-          <div id="expense-list" class="expense-list-container">
-            <div class="loading-placeholder">無資料</div>
-          </div>
-        </section>
+        <!-- 米其林備選與停業提醒 -->
+        <div id="michelin-warning-mount"></div>
 
-        <!-- 2. 結算總覽 -->
-        <section id="expense-summary-section" class="sub-content hidden">
-          <div class="section-header header-flex">
-            <h2 class="section-title">⚖️ 結算總覽</h2>
-            <div class="header-action-group">
-              <select id="settlement-base-currency" class="base-currency-select"
-                onchange="window.handleBaseCurrencyChange(this.value)">
-                <!-- 由 JS 動態填充幣別 -->
-              </select>
-              <div class="header-rate-info"></div>
-            </div>
-          </div>
-          <div id="expense-summary" class="card settlement-card">
-            <div class="loading-placeholder">無資料</div>
-          </div>
-        </section>
+        <!-- 米其林美食卡片網格 -->
+        <div id="michelin-grid-mount" class="venue-grid"></div>
+      </section>
 
-        <!-- 3. 個人結帳 -->
-        <section id="personal-settlement-section" class="sub-content hidden">
-          <div class="section-header header-flex">
-            <h2 class="section-title">👤 個人帳務 <small>我在這趟旅行中的資產淨值</small></h2>
-            <div class="header-action-group">
-              <select id="personal-base-currency" class="base-currency-select"
-                onchange="window.handleBaseCurrencyChange(this.value)">
-                <!-- 由 JS 動態填充幣別 -->
-              </select>
-              <div class="header-rate-info"></div>
-            </div>
-          <div id="personal-settlement" class="card settlement-card">
-            <div class="loading-placeholder">無資料</div>
+      <!-- TAB 4: 三、步行 15 分鐘內：台灣人/華人經營與中文友善大麻店 -->
+      <section id="tab-cannabis" class="tab-panel" role="tabpanel">
+        <div class="section-intro-bar">
+          <div>
+            <span class="section-eyebrow">SECTION 03・CHINESE-FRIENDLY DISPENSARIES & LOUNGES</span>
+            <h2 class="section-heading">三、步行 15 分鐘內：台灣人/華人經營與中文友善大麻店</h2>
+            <p class="section-desc">下樓步行 2～15 分鐘即達！首推正宗台灣老闆主理複合式「餐麻館」GOLDEN HOUR BKK 與 Sukhumvit 11 巷內明亮安全門市。</p>
           </div>
-        </section>
-      </div>
-
-      <!-- 行程推薦分頁 -->
-      <div id="recommendation-content" class="hidden">
-        <div class="expense-header-action">
-          <button class="btn btn-primary btn-lg" onclick="window.openRecommendationModal()">
-            <span class="btn-icon">🌏</span> 推薦新地點
-          </button>
+          <div class="filter-pills" data-filter-group="cannabis">
+            <button class="filter-pill active" data-filter="all">全部店鋪 (5)</button>
+            <button class="filter-pill" data-filter="soi11">📍 Sukhumvit 11 巷內 (3)</button>
+            <button class="filter-pill" data-filter="lounge">🛋️ 附設 Lounge / 餐飲 (3)</button>
+          </div>
         </div>
 
-        <section class="voting-section">
-          <div class="section-header">
-            <h2 class="section-title">📍 大家推薦的景點 <small>隨手貼上網址，系統自動抓圖</small></h2>
-          </div>
-          <div id="recommendation-list" class="accommodation-grid">
-            <div class="loading-placeholder">載入中...</div>
-          </div>
-        </section>
-      </div>
+        <!-- Pakalolo 歇業避雷提醒 -->
+        <div id="cannabis-warning-mount"></div>
 
-      <div id="global-stats" class="stats-footer card">
-        <h3>目前投票進度</h3>
-        <div id="stats-summary">
-          <!-- 統計總結 -->
+        <!-- 大麻店卡片網格 -->
+        <div id="cannabis-grid-mount" class="venue-grid"></div>
+      </section>
+
+      <!-- TAB 5: 四、周邊其他補充選項（延伸備案） -->
+      <section id="tab-extended" class="tab-panel" role="tabpanel">
+        <div class="section-intro-bar">
+          <div>
+            <span class="section-eyebrow">SECTION 04・EXTENDED POCKET LIST</span>
+            <h2 class="section-heading">四、周邊其他補充選項（延伸備案）</h2>
+            <p class="section-desc">涵蓋 Nana / Asok 周邊其他大麻專門店、4.8 星精緻按摩與視障深層指壓、Mark Wiens 打拋豬與凌晨 4 點宵夜泰菜。</p>
+          </div>
+          <div class="filter-pills" data-filter-group="extended">
+            <button class="filter-pill active" data-filter="all">全部延伸備案 (12)</button>
+            <button class="filter-pill" data-filter="ext-cannabis">🌿 延伸大麻店 (5)</button>
+            <button class="filter-pill" data-filter="ext-spa">💆 特色按摩館 (2)</button>
+            <button class="filter-pill" data-filter="ext-food">🌶️ 人氣泰式餐廳 (5)</button>
+          </div>
         </div>
-      </div>
+
+        <div id="extended-sections-mount"></div>
+      </section>
+
+      <!-- TAB 6: 我的行程收藏 -->
+      <section id="tab-saved" class="tab-panel" role="tabpanel">
+        <div class="section-intro-bar">
+          <div>
+            <span class="section-eyebrow">MY POCKET LIST・12/18 - 12/20</span>
+            <h2 class="section-heading">❤️ 我的曼谷口袋收藏清單</h2>
+            <p class="section-desc">點擊任一店家的「♡ 收藏」按鈕，即可將想去的地方集中於此（自動儲存於瀏覽器）。</p>
+          </div>
+          <div>
+            <button id="clear-saved-btn" class="btn btn-outline btn-sm">清空收藏清單</button>
+          </div>
+        </div>
+        <div id="saved-grid-mount" class="venue-grid"></div>
+      </section>
     </main>
 
-    <footer>
-      <p>&copy; 2026 Pattaya Trip Team | Designed for the Boys</p>
+    <!-- 底部資訊欄 -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <h3>BANGKOK TRIP・SUKHUMVIT 11 GUIDE</h3>
+          <p>住宿中心：<strong>Travelodge Sukhumvit 11 (Superior Premium Room)</strong>｜住宿日期：<strong>12/18 – 12/20 雙人房</strong></p>
+          <p class="footer-sub">交通設定：步行 15～20 分鐘內 或 搭乘 Grab / 計程車 / 嘟嘟車 車程 20 分鐘內</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://www.travelodgehotels.asia/travelodge-sukhumvit-11/" target="_blank" rel="noopener noreferrer">Travelodge 官網</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Travelodge+Sukhumvit+11+Bangkok" target="_blank" rel="noopener noreferrer">飯店 Google Maps</a>
+          <a href="https://guide.michelin.com/tw/zh_TW/bangkok-region/bangkok/restaurants" target="_blank" rel="noopener noreferrer">曼谷米其林指南</a>
+        </div>
+      </div>
     </footer>
-    <!-- 支出彈出視窗 -->
-    <div id="expense-modal" class="modal hidden">
-      <div class="modal-content card">
-        <h2 id="modal-title">💸 登記支出</h2>
-        <form id="expense-form">
-          <input type="hidden" id="expense-id">
-          <div class="form-group">
-            <label>項目名稱</label>
-            <input type="text" id="item-name" required placeholder="例如：計程車、晚餐">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>金額</label>
-              <input type="number" id="amount" required step="0.01" inputmode="decimal">
-            </div>
-            <div class="form-group">
-              <label>幣別</label>
-              <select id="currency">
-                <option value="">無幣別資料</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>支付者 (誰付的錢？可多選並填金額)</label>
-            <div id="payers-container" class="multi-select-container">
-              <!-- JS 動態生成使用者列表與金額輸入 -->
-            </div>
-          </div>
-          <div class="form-group">
-            <label>分款者 (誰要分這筆錢？可多選)</label>
-            <div id="splitters-container" class="multi-select-container grid-cols-2">
-              <!-- JS 動態生成使用者勾選清單 -->
-            </div>
-          </div>
-          <div class="form-group">
-            <label>備註</label>
-            <textarea id="remarks" rows="2"></textarea>
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" onclick="window.closeExpenseModal()">取消</button>
-            <button type="submit" class="btn btn-primary">儲存支出</button>
-          </div>
-        </form>
+
+    <!-- 互動式圖片畫廊與店家詳情 Modal -->
+    <div id="detail-modal" class="modal-backdrop hidden" aria-hidden="true">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close-btn" id="modal-close-btn" aria-label="關閉視窗">✕</button>
+        <div id="modal-body-mount"></div>
       </div>
     </div>
+
+    <!-- 複製成功 Toast 通知 -->
+    <div id="toast-notification" class="toast-notification hidden"></div>
   </div>
 
-  <!-- 匯率管理彈出視窗 -->
-  <div id="rate-modal" class="modal hidden">
-    <div class="modal-content card" style="max-width: 400px;">
-      <h2>⚙️ 幣別匯率管理</h2>
-      <div id="rate-management-list" class="rate-mgmt-list">
-        <!-- JS 動態生成幣別列表 -->
-      </div>
-      <div class="rate-add-section">
-        <h4>➕ 新增幣別</h4>
-        <div class="form-row">
-          <input type="text" id="new-curr-code" placeholder="代碼 (如 USD)" maxlength="3"
-            style="text-transform: uppercase;">
-          <input type="number" id="new-curr-rate" placeholder="對 TWD 匯率" step="0.001">
-        </div>
-        <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px;"
-          onclick="window.addNewCurrency()">新增幣別並存檔</button>
-      </div>
-      <div class="modal-actions" style="margin-top: 30px;">
-        <button type="button" class="btn btn-secondary" onclick="window.closeRateModal()">關閉</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 行程推薦彈出視窗 -->
-  <div id="recommendation-modal" class="modal hidden">
-    <div class="modal-content card">
-      <h2>🌏 推薦景點 / 行程</h2>
-      <form id="recommendation-form">
-        <input type="hidden" id="rec-id">
-        <div class="form-group">
-          <label>參考連結 (貼上後系統會自動抓圖)</label>
-          <div style="display: flex; gap: 10px;">
-            <input type="url" id="rec-url" required placeholder="https://..." style="flex: 1;">
-            <button type="button" id="btn-crawl" class="btn btn-secondary" style="white-space: nowrap;">抓取資訊</button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>名稱</label>
-          <input type="text" id="rec-name" required placeholder="例如：中天夜市、格蘭島半日遊">
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>地點</label>
-            <input type="text" id="rec-location" placeholder="例如：Pattaya City">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>心得 / 描述</label>
-          <textarea id="rec-description" rows="3" placeholder="大家一定要去！這家的芒果糯米飯超強..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>抓取到的圖片預覽</label>
-          <div id="rec-preview-images" class="preview-images-container">
-            <!-- 抓取後的圖片預覽 -->
-          </div>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" onclick="window.closeRecommendationModal()">取消</button>
-          <button type="submit" class="btn btn-primary">確認推薦</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Supabase CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="module" src="./src/main.js"></script>
-  <!-- 自定義確認彈窗 (取代 browser confirm) -->
-  <div id="confirm-modal" class="modal hidden">
-    <div class="modal-content card" style="max-width: 400px; text-align: center; padding: 30px;">
-      <div id="confirm-icon" style="font-size: 3rem; margin-bottom: 20px;">⚠️</div>
-      <h2 id="confirm-title" style="margin-bottom: 15px;">確認操作</h2>
-      <p id="confirm-message" style="color: #666; margin-bottom: 30px; line-height: 1.6;"></p>
-      <div class="modal-actions" style="justify-content: center; gap: 15px;">
-        <button id="confirm-cancel" class="btn btn-secondary" style="min-width: 100px;">取消</button>
-        <button id="confirm-ok" class="btn btn-primary" style="min-width: 100px; background: #ff4d4f;">確定</button>
-      </div>
-    </div>
-  </div>
 </body>
 
 </html>
